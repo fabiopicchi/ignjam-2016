@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="ignjam-2016" package="com.example.app" version="1.0.0" company="" />
+	<meta title="ignjam-2016" package="ignjam-2016" version="1.0.0" company="teste" />
 
- 	<app file="Main" main="Main" path="bin" />
+	<!-- output -->
+ 	<app file="ignjam-2016" main="Main" path="bin" />
 
 	<window fps="60" background="0x333333" />
 	<window width="640" height="480" resizable="true" unless="mobile" />
@@ -11,8 +12,10 @@
 
 	<source path="src" />
 
+	<!-- classpath, haxe libs -->
 	<haxelib name="HaxePunk" />
 
+	<!-- assets -->
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
 	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
