@@ -3,8 +3,8 @@ import com.haxepunk.graphics.Image;
 class FacePartExpression extends FacePart{
     private var _expressions:Array<Expression>;
 
-    public function new(x:Int, y:Int, width:Int, height:Int){
-        super(x, y, width, height); 
+    public function new(data:Dynamic){
+        super(data); 
         _expressions = new Array<Expression>();
     }
 

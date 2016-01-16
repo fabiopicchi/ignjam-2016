@@ -4,8 +4,9 @@ import com.haxepunk.graphics.Image;
 import haxe.Json;
 import haxe.ds.StringMap;
 import openfl.Assets;
+import openfl.Lib;
 
-class Main extends Engine
+class MainEngine extends Engine
 {
     public static var faceparts:StringMap<FacePartExpression>;
     public static var questions:Dynamic;
@@ -19,7 +20,7 @@ class Main extends Engine
         HXP.scene = new MenuScene();
 
         var data = Json.parse(Assets.getText("assets/faceparts.json"));
-        var positionData = Json.parse(Assets.getText("assets/partspositions.json"));
+        var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
 
         var arFaceparts:Array<Dynamic> = cast(data, Array<Dynamic>);
 
@@ -36,12 +37,8 @@ class Main extends Engine
             expression.disgust = f.disgust;
 
             if(!faceparts.exists(f.type)){
-                var facepartExpression = new FacePartExpression(
-                    Reflect.field(positionData, f.type).x, 
-                    Reflect.field(positionData, f.type).y, 
-                    Reflect.field(positionData, f.type).width, 
-                    Reflect.field(positionData, f.type).height);
-
+                var facepartExpression = 
+                    new FacePartExpression(Reflect.field(positionData, f.type));
                 facepartExpression.type = f.type;
                 faceparts.set(f.type, facepartExpression);
             }
@@ -54,6 +51,5 @@ class Main extends Engine
         people = Json.parse(Assets.getText("assets/people.json"));
     }
 
-    public static function main() { new Main(); }
-
+    public static function main() { Lib.current.addChild(new MainEngine()); }
 }

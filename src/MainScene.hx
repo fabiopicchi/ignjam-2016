@@ -21,8 +21,10 @@ class MainScene extends Scene{
     private var _pausedMenu:Entity;
 
     private var _answers:Array<Array<Expression>>;
-
     private var _sfxMap:StringMap<Array<Sfx>> = new StringMap<Array<Sfx>>();
+
+    // Entities
+    private var _mouthCenter:FacePart;
 
     public function new(charConfig:Array<Int>){
         super();
@@ -39,30 +41,34 @@ class MainScene extends Scene{
     }
 
     override public function begin(){
-        var body = new Entity();
-        body.addGraphic(new Image("graphics/hair02.png"));
-        body.addGraphic(new Image("graphics/body.png"));
+        var body = new Entity(966, 21);
+        var img = new Image("graphics/hair02.png");
+        img.color = 0x1e1e28;
+        body.addGraphic(img);
+        img = new Image("graphics/body.png");
+        img.color = 0xb46e32;
+        body.addGraphic(img);
         body.addGraphic(new Image("graphics/body_dress.png"));
-        body.addGraphic(new Image("graphics/face.png"));
+        img = new Image("graphics/face.png");
+        img.color = 0xb46e32;
+        body.addGraphic(img);
         body.addGraphic(new Image("graphics/face_highlight.png"));
         add(body);
 
-        var part = new FacePart(406, 800, 321, 182);
-        part.addGraphic(new Image("graphics/mouthcenterclose.png"));
-        part.addGraphic(new Image("graphics/mouthcenteropen.png"));
-        add(part);
+        _mouthCenter = new FacePart({
+            x: 1212, 
+            y: 730, 
+            h_width: 0, 
+            h_height: 0
+        });
+        _mouthCenter.addGraphic(new Image("graphics/mouthcenterclose.png"));
+        _mouthCenter.addGraphic(new Image("graphics/mouthcenteropen.png"));
+        add(_mouthCenter);
 
-        for(f in Main.faceparts){
+        for(f in MainEngine.faceparts){
             add(f);
             _interactiveFaceParts.push(f);
         }
-
-        _actionBar = new ActionBar(20, 20);
-        add(_actionBar);
-        _actionBar.start(LEVEL_DURATION, levelOver);
-
-        add(new AnimatedText(100, 400, 
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."));
 
         _pausedMenu = new Entity();
         _pausedMenu.graphic = Image.createRect(HXP.width, HXP.height, 0x000000, 0.4);
@@ -95,9 +101,15 @@ class MainScene extends Scene{
         
         super.update();
 
-        if(Input.mousePressed && collidePoint("nose", Input.mouseX, Input.mouseY) != null){
+        var colResult = collidePoint("nose", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
             var arSfx = _sfxMap.get("nose");
             arSfx[Math.floor(Math.random() * arSfx.length)].play();
+        }
+
+        colResult = collidePoint("l_mouth", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+           _mouthCenter.updateGraphic(Math.floor(cast(colResult, FacePart).index / 2));
         }
     }
 
