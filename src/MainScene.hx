@@ -1,4 +1,8 @@
+import com.haxepunk.HXP;
 import com.haxepunk.Scene;
+import com.haxepunk.Entity;
+import com.haxepunk.utils.Key;
+import com.haxepunk.utils.Input;
 import com.haxepunk.graphics.Image;
 
 class MainScene extends Scene
@@ -6,10 +10,13 @@ class MainScene extends Scene
     private var _charConfig:Array<Int>;
     private var _interactiveFaceParts:Array<FacePart>;
     private var _actionBar:ActionBar;
+    private var _paused:Bool;
+    private var _pausedMenu:Entity;
 
     public function new(charConfig:Array<Int>){
         super();
         _charConfig = charConfig;
+        _paused = false;
     }
 
     override public function begin(){
@@ -57,6 +64,11 @@ class MainScene extends Scene
 
         add(new AnimatedText(100, 400, 
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry."));
+
+        _pausedMenu = new Entity();
+        _pausedMenu.graphic = Image.createRect(HXP.width, HXP.height, 0x000000, 0.4);
+        _pausedMenu.visible = _paused;
+        add(_pausedMenu);
     }
 
     public function checkScore(){
@@ -69,6 +81,11 @@ class MainScene extends Scene
     }
 
     override public function update(){
+        if(Input.pressed(Key.ESCAPE))
+            _pausedMenu.visible = _paused = !_paused;
+
+        if(_paused) return;
+        
         super.update();
     }
 
