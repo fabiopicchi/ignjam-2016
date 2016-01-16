@@ -3,6 +3,13 @@ import com.haxepunk.graphics.Image;
 
 class MainScene extends Scene
 {
+    private var _charConfig:Array<Int>;
+
+    public function new(charConfig:Array<Int>){
+        super();
+        _charConfig = charConfig;
+    }
+
     override public function begin(){
         var p = new FacePart(100, 100, 50, 50);
 

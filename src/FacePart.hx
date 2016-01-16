@@ -7,7 +7,10 @@ import com.haxepunk.utils.Input;
 class FacePart extends Entity
 {
     private var _graphiclist:Graphiclist = new Graphiclist();
-    private var _graphicIndex:Int = -1;
+    private var _graphicIndex:Int = 0;
+
+    public var index(get, null):Int;
+    private function get_index() return _graphicIndex;
 
     public function new(x:Int, y:Int, width:Int, height:Int){
         super(x, y, _graphiclist); 
@@ -17,13 +20,25 @@ class FacePart extends Entity
     override public function addGraphic(graphic:Graphic):Graphic{
         var image = cast(graphic, Image);
 
-        _graphicIndex = _graphiclist.count + 1;
+        _graphicIndex = _graphiclist.count;
         for(g in _graphiclist.children) g.visible = false;
 
         graphic.x = (width - image.width) >> 1;
         graphic.y = (height - image.height) >> 1;
 
         return super.addGraphic(graphic);
+    }
+
+    public function randomize(){
+        if(_graphiclist.count > 1)
+        {
+            var randomizedIndex = _graphicIndex;
+            do { 
+                randomizedIndex = Math.floor(Math.random() * _graphiclist.count);
+            } while(randomizedIndex == _graphicIndex);
+
+            updateGraphic(randomizedIndex);
+        }
     }
 
     private static inline function cycleValue(v:Int, min:Int, max:Int):Int{
