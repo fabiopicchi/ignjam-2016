@@ -4,8 +4,7 @@ import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Input;
 
-class FacePart extends Entity
-{
+class FacePart extends Entity{
     private var _graphiclist:Graphiclist = new Graphiclist();
     private var _graphicIndex:Int = 0;
 
@@ -15,6 +14,7 @@ class FacePart extends Entity
     public function new(x:Int, y:Int, width:Int, height:Int){
         super(x, y, _graphiclist); 
         setHitbox(width, height);
+        centerOrigin();
     }
 
     override public function addGraphic(graphic:Graphic):Graphic{
@@ -23,8 +23,8 @@ class FacePart extends Entity
         _graphicIndex = _graphiclist.count;
         for(g in _graphiclist.children) g.visible = false;
 
-        graphic.x = (width - image.width) >> 1;
-        graphic.y = (height - image.height) >> 1;
+        graphic.x = -image.width >> 1;
+        graphic.y = -image.height >> 1;
 
         return super.addGraphic(graphic);
     }
@@ -59,7 +59,7 @@ class FacePart extends Entity
         if(Input.mousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
             updateGraphic(cycleValue(_graphicIndex + 1, 0, _graphiclist.count - 1));
 
-        if(Input.rightMousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
-            updateGraphic(cycleValue(_graphicIndex - 1, 0, _graphiclist.count - 1));
+//        if(Input.rightMousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
+//            updateGraphic(cycleValue(_graphicIndex - 1, 0, _graphiclist.count - 1));
     }
 }

@@ -1,0 +1,221 @@
+[{
+	"type": "l_eyebrow",
+	"name": "browleft01",
+	"swag": 0,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 0
+}, {
+	"type": "l_eyebrow",
+	"name": "browleft02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 10,
+	"excitement": 10,
+	"surprise": 0,
+	"disgust": 5
+}, {
+	"type": "l_eyebrow",
+	"name": "browleft03",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 5,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 5
+}, {
+	"type": "r_eyebrow",
+	"name": "browright01",
+	"swag": 0,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 0
+}, {
+	"type": "r_eyebrow",
+	"name": "browright02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 10,
+	"excitement": 10,
+	"surprise": 0,
+	"disgust": 5
+}, {
+	"type": "r_eyebrow",
+	"name": "browright03",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 5,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 5
+}, {
+	"type": "l_eye",
+	"name": "eyeleft01",
+	"swag": 0,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 10,
+	"surprise": 10,
+	"disgust": 0
+}, {
+	"type": "l_eye",
+	"name": "eyeleft02",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 5,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 5
+}, {
+	"type": "l_eye",
+	"name": "eyeleft03",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 5,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 0
+}, {
+	"type": "r_eye",
+	"name": "eyeright01",
+	"swag": 0,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 10,
+	"surprise": 10,
+	"disgust": 0
+}, {
+	"type": "r_eye",
+	"name": "eyeright02",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 5,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 5
+}, {
+	"type": "r_eye",
+	"name": "eyeright03",
+	"swag": 5,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 5,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 0
+}, {
+	"type": "nose",
+	"name": "nose01",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 0
+}, {
+	"type": "nose",
+	"name": "nose02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 5,
+	"anger": 10,
+	"excitement": 5,
+	"surprise": 0,
+	"disgust": 10
+}, {
+	"type": "l_mouth",
+	"name": "mouthleftclosed01",
+	"swag": 10,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 0
+}, {
+	"type": "l_mouth",
+	"name": "mouthleftclosed02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 0,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 0
+}, {
+	"type": "l_mouth",
+	"name": "mouthleftopen01",
+	"swag": 5,
+	"joy": 10,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 10,
+	"surprise": 10,
+	"disgust": 0
+}, {
+	"type": "l_mouth",
+	"name": "mouthleftopen02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 10,
+	"excitement": 10,
+	"surprise": 5,
+	"disgust": 10
+}, {
+	"type": "r_mouth",
+	"name": "mouthrightclosed01",
+	"swag": 10,
+	"joy": 5,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 5,
+	"surprise": 5,
+	"disgust": 0
+}, {
+	"type": "r_mouth",
+	"name": "mouthrightclosed02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 0,
+	"excitement": 0,
+	"surprise": 0,
+	"disgust": 0
+}, {
+	"type": "r_mouth",
+	"name": "mouthrightopen01",
+	"swag": 5,
+	"joy": 10,
+	"sadness": 0,
+	"anger": 0,
+	"excitement": 10,
+	"surprise": 10,
+	"disgust": 0
+}, {
+	"type": "r_mouth",
+	"name": "mouthrightopen02",
+	"swag": 0,
+	"joy": 0,
+	"sadness": 10,
+	"anger": 10,
+	"excitement": 10,
+	"surprise": 5,
+	"disgust": 10
+}]

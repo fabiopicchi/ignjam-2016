@@ -1,0 +1,14 @@
+cores de pele
+
+255, 210, 130 (#ffd282)
+230, 150, 80 (#e69650)
+180, 110, 50 (#b46e32)
+150, 80, 40 (#965028)
+
+cores de cabelo
+
+black: 30, 30, 40 (#1e1e28)
+darkbrown: 140, 60, 10 (#8c3c0a)
+ginger: 200, 80, 20 (#c85014)
+darkblonde: 200, 160, 30 (#c8a01e)
+blonde: 250, 200, 90 (#fac85a)
