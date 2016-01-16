@@ -19,8 +19,7 @@ class ActionBar extends Entity
 
     public function start(duration:Float, callback:Void -> Void){
         _running = true;
-        _duration = duration;
-        _timeLasting = _duration;
+        _timeLasting = _duration = duration;
         _callback = callback;
     }
 
@@ -29,8 +28,8 @@ class ActionBar extends Entity
             _timeLasting -= HXP.elapsed;
             if(_timeLasting < 0){
                 _running = false;      
-                _callback(); 
                 _timeLasting = 0;
+                _callback(); 
             }
             cast(graphic, Image).scaleX = _timeLasting / _duration;
         }
