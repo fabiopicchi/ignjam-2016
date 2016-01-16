@@ -19,6 +19,9 @@ class MainScene extends Scene
         add(t);
 
         t.start(5.0, timerEnd);
+
+        add(new AnimatedText(100, 50, 
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."));
     }
 
     public function timerEnd(){
@@ -28,4 +31,5 @@ class MainScene extends Scene
     override public function update(){
         super.update();
     }
+
 }
