@@ -49,14 +49,7 @@ class TalkBaloon extends Entity{
         if(text.length > 0){
             addLetterTween();
         } else {
-            var image:Image;
-			if (_fullText.length > 0) {
-				image = new Image("graphics/emojis/" + _currentEmoji + ".png");
-			}
-			else {
-				image = new Image("graphics/emojis/" + _currentEmoji + "_big.png");
-			}
-			
+            var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
             image.x = baloon.width/2 - image.width/2;
             image.y = baloon.height / 2 - image.height / 2 - 45;
             addGraphic(image);
@@ -73,21 +66,20 @@ class TalkBaloon extends Entity{
         if(_text.text.length < _fullText.length){
             _text.text = _text.text + _fullText.substr(_currentTextIndex++, 1);
             addLetterTween();
-			var click = new Sfx("audio/click_termometer_up.ogg");
-			click.play(0.7);
         } else {
             _running = false;
+            var alarm = new Sfx("audio/clock_alarm.ogg");
+            alarm.play(0.5);
             if(_callback != null) _callback();
             if(_fullText.length > 0){
                 var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
                 image.x = baloon.width/2 - image.width/2;
                 image.y = _text.y + _text.textHeight + 10;
                 addGraphic(image);
-				var alarm = new Sfx("audio/clock_alarm.ogg");
-				alarm.play(0.5);
             }
         }
-        
+        var click = new Sfx("audio/click_termometer_up.ogg");
+        click.play(0.7);
     }
 
     public function pause():Void{
@@ -98,12 +90,5 @@ class TalkBaloon extends Entity{
     public function resume():Void{
         letterInsert();
         _running = true;
-    }
-
-    override public function update(){
-        if(Input.middleMousePressed) {
-            if(_running) pause();
-            else resume();
-        }
     }
 }
