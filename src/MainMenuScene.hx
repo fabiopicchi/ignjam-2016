@@ -15,6 +15,10 @@ class MainMenuScene extends Scene{
     private var btStart:Entity;
     private var btCredits:Entity;
     private var btRandom:Entity;
+	
+	private var song:Sfx;
+    private var btn_no:Sfx;
+    private var btn_yes:Sfx;
 
     override public function begin(){
         super.begin();
@@ -61,6 +65,11 @@ class MainMenuScene extends Scene{
         btRandom.x = 407; btRandom.y = 973;
         btRandom.setHitbox(Math.floor(220 * HXP.engine.scaleX), Math.floor(220 * HXP.engine.scaleY));
         add(btRandom);
+		
+		song = new Sfx("audio/song_title.ogg");
+		song.loop();
+		btn_no = new Sfx("audio/button_no.ogg");
+		btn_yes = new Sfx("audio/button_yes.ogg"); 
     }
 
     override public function update(){
@@ -71,6 +80,8 @@ class MainMenuScene extends Scene{
                         Input.mouseX,
                         Input.mouseY))
             {
+				song.stop();				
+				btn_yes.play();
                 HXP.scene = new MinglrScene();
             }
             
@@ -79,6 +90,8 @@ class MainMenuScene extends Scene{
                         Input.mouseX,
                         Input.mouseY))
             {
+				song.stop();
+				btn_yes.play();
                 MainEngine.nextStage();
             }
 
@@ -87,6 +100,7 @@ class MainMenuScene extends Scene{
                         Input.mouseX,
                         Input.mouseY))
             {
+				btn_yes.play();
                 randomize();
             }
         }

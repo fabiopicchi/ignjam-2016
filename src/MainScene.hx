@@ -351,7 +351,7 @@ class MainScene extends Scene{
                 _sfxMap.get("click").play();
             }
             // date.startTalking();
-            _turnCounter.updateCounter();
+            
         }
         else {
             stageOver();
@@ -503,5 +503,6 @@ class MainScene extends Scene{
         _baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);	
         _sfxMap.get("click").play();
         date.startTalking();
+		_turnCounter.updateCounter();
     }
 }
