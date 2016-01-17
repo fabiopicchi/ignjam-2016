@@ -80,18 +80,19 @@ class MainScene extends Scene{
     }
 
     override public function begin(){
-        var index = Math.floor(MainEngine.questions.length * Math.random());
-        var arIndexes = [index];
-        _questions.push(MainEngine.questions[index]);
-        for(i in 0...(_numLevels - 1)){
-            do { 
-                index = Math.floor(MainEngine.questions.length * Math.random());
-            } while (arIndexes.indexOf(index) != -1);
-
+        
+		var index = -1;
+        var arIndexes = [];
+		trace(MainEngine.currentStage);
+        for(i in 0...(_numLevels)){
+            do {               
+				index = Math.floor(MainEngine.questions.length * Math.random());
+				trace("level: " + MainEngine.questions[index].level);
+            } while (arIndexes.indexOf(index) >= 0 ||
+					 MainEngine.questions[index].level != MainEngine.currentStage);
             arIndexes.push(index);
             _questions.push(MainEngine.questions[index]);
         }
-
         trace(arIndexes);
 
         var bg = new Entity();
