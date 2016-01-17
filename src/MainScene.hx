@@ -331,11 +331,12 @@ class MainScene extends Scene{
     private function stageOver() {
         if (stageScore < 20) {
             trace("GaME OVER: " + stageScore);
-            MainEngine.currentStage = 5;
+            HXP.scene = new SquickrScene(false, stageScore);
+        } else {
+            HXP.scene = new SquickrScene(true, stageScore);
         }
         _sfxMap.get("song").stop();
         _sfxMap.get("amb").stop();
-        MainEngine.nextStage();
     }
 
     override public function update(){

@@ -54,7 +54,7 @@ class TalkBaloon extends Entity{
             image.y = baloon.height / 2 - image.height / 2 - 45;
             addGraphic(image);
 
-            addTween(new Tween(3.0, TweenType.OneShot, letterInsert)).start();
+            addTween(new Tween(1.0, TweenType.OneShot, letterInsert)).start();
         }
     }
 

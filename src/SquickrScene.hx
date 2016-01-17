@@ -156,7 +156,7 @@ class SquickrScene extends Scene
         fill.scaleX = 0;
         var vTween1 = new VarTween(result, TweenType.OneShot);
         addTween(vTween1);
-        vTween1.tween(fill, "scaleX", (score + 200)/400, 5);
+        vTween1.tween(fill, "scaleX", (score + 200)/400, 2);
 
         add(bg);
         add(mybody);
@@ -200,7 +200,7 @@ class SquickrScene extends Scene
                         Input.mouseX,
                         Input.mouseY))
             {
-                HXP.scene = new MainScene();
+                MainEngine.nextStage();
             }
         }
     }
