@@ -269,5 +269,14 @@ class MainScene extends Scene{
         for(f in MainEngine.faceparts){
             remove(f);
         }
+
+        l_eyebrow = null;
+        r_eyebrow = null;
+        l_eye = null;
+        r_eye = null;
+        nose = null; 
+        l_mouth = null;
+        r_mouth = null;
+        _mouthCenter = null;
     }
 }

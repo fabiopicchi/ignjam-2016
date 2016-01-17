@@ -25,10 +25,9 @@ class TalkBaloon extends Entity{
             color : 0x000000,
             align: TextFormatAlign.CENTER,
             wordWrap : true};
+        _text = new Text("", 70, 107, 724, 0, textFormat);
 
         addGraphic(baloon = new Image("graphics/balao.png"));
-
-        _text = new Text("", 70, 107, 724, 0, textFormat);
         addGraphic(_text);
     }
 

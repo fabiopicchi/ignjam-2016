@@ -32,7 +32,7 @@ class MainEngine extends Engine
 #if debug
         HXP.console.enable();
 #end
-        HXP.scene = new MenuScene();
+        HXP.scene = new MinglrScene();
 
         scaleX = scaleY = 0.625;
 
@@ -91,7 +91,7 @@ class MainEngine extends Engine
             HXP.scene = new MainScene();
         } else {
             currentStage = 1;
-            HXP.scene = new MenuScene();
+            HXP.scene = new MinglrScene();
         }
     }
 }
