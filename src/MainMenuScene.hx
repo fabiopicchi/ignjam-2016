@@ -90,7 +90,6 @@ class MainMenuScene extends Scene{
                         Input.mouseX,
                         Input.mouseY))
             {
-				song.stop();
 				btn_yes.play();
                 MainEngine.nextStage();
             }
