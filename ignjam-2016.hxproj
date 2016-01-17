@@ -15,20 +15,16 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\Sinc\Repos\ignjam-2016\lime\HaxePunk\2,5,6" />
-    <class path="C:\Sinc\Repos\ignjam-2016\lime\openfl\3,5,3" />
-    <class path="C:\Sinc\Repos\ignjam-2016\lime\lime\2,8,3" />
-    <class path="src" />
-    <class path="bin\flash\haxe" />
+    <class path="." />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="HaxePunk=2.5.6&#xA;openfl=3.5.3&#xA;lime=2.8.3&#xA;openfl-next&#xA;tools=2.8.3&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
+    <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--macro openfl.Lib.includeExterns()&#xA;-swf-version 11.2" />
+    <option additional="haxelib Repository C:\Sinc\Repos\ignjam-2016\lime does not exist. Please run `haxelib setup` again" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
