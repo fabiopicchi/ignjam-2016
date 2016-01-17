@@ -9,6 +9,7 @@ import openfl.Lib;
 
 class MainEngine extends Engine
 {
+	public static var peopleFlavorText:Dynamic;
     public static var faceparts:StringMap<FacePart>;
     public static var facepartsRaw:Array<Dynamic>;
     public static var facepartsScoreRaw:Array<Dynamic>;
@@ -65,6 +66,8 @@ class MainEngine extends Engine
             faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }
 
+		
+		peopleFlavorText = Json.parse(Assets.getText("assets/peopleflavor.json"));
         questions = Json.parse(Assets.getText("assets/questions.json"));
         people = Json.parse(Assets.getText("assets/people.json"));
         mindlrProfiles = Json.parse(Assets.getText("assets/mindlr-profiles.json"));
