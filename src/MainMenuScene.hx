@@ -15,10 +15,13 @@ class MainMenuScene extends Scene{
     private var btStart:Entity;
     private var btCredits:Entity;
     private var btRandom:Entity;
-	
-	private var song:Sfx;
+
+    private var song:Sfx;
     private var btn_no:Sfx;
     private var btn_yes:Sfx;
+
+    private var credits:Bool;
+    private var creditsScreen:Entity;
 
     override public function begin(){
         super.begin();
@@ -65,43 +68,53 @@ class MainMenuScene extends Scene{
         btRandom.x = 407; btRandom.y = 973;
         btRandom.setHitbox(Math.floor(220 * HXP.engine.scaleX), Math.floor(220 * HXP.engine.scaleY));
         add(btRandom);
-		
-		song = new Sfx("audio/song_title.ogg");
-		song.loop();
-		btn_no = new Sfx("audio/button_no.ogg");
-		btn_yes = new Sfx("audio/button_yes.ogg"); 
+
+        song = new Sfx("audio/song_title.ogg");
+        song.loop();
+        btn_no = new Sfx("audio/button_no.ogg");
+        btn_yes = new Sfx("audio/button_yes.ogg"); 
+
+        credits = false;
+        creditsScreen = new Entity();
+        creditsScreen.addGraphic(Image.createRect(1920, 1200, 0x000000, 0.8));
+        creditsScreen.addGraphic(new Image("graphics/creditsfull.png"));
     }
 
     override public function update(){
         super.update();
         if(Input.mousePressed){
-            if(btStart.collidePoint(btStart.x * HXP.engine.scaleX,
-                        btStart.y * HXP.engine.scaleY,
-                        Input.mouseX,
-                        Input.mouseY))
-            {
-				song.stop();				
-				btn_yes.play();
-                HXP.scene = new MinglrScene();
-            }
-            
-            if(btCredits.collidePoint(btCredits.x * HXP.engine.scaleX,
-                        btCredits.y * HXP.engine.scaleY,
-                        Input.mouseX,
-                        Input.mouseY))
-            {
-				song.stop();
-				btn_yes.play();
-                MainEngine.nextStage();
-            }
+            if(!credits){
+                if(btStart.collidePoint(btStart.x * HXP.engine.scaleX,
+                            btStart.y * HXP.engine.scaleY,
+                            Input.mouseX,
+                            Input.mouseY))
+                {
+                    song.stop();				
+                    btn_yes.play();
+                    HXP.scene = new MinglrScene();
+                }
 
-            if(btRandom.collidePoint(btRandom.x * HXP.engine.scaleX,
-                        btRandom.y * HXP.engine.scaleY,
-                        Input.mouseX,
-                        Input.mouseY))
-            {
-				btn_yes.play();
-                randomize();
+                if(btCredits.collidePoint(btCredits.x * HXP.engine.scaleX,
+                            btCredits.y * HXP.engine.scaleY,
+                            Input.mouseX,
+                            Input.mouseY))
+                {
+                    btn_yes.play();
+                    credits = true;
+                    add(creditsScreen);
+                }
+
+                if(btRandom.collidePoint(btRandom.x * HXP.engine.scaleX,
+                            btRandom.y * HXP.engine.scaleY,
+                            Input.mouseX,
+                            Input.mouseY))
+                {
+                    btn_yes.play();
+                    randomize();
+                }
+            } else {
+                credits = false;
+                remove(creditsScreen);            
             }
         }
     }
@@ -134,7 +147,7 @@ class MainMenuScene extends Scene{
         img.scaleX = img.scaleY = scale;
         mybody.addGraphic(img);
         img = MainEngine.charConfig[0] == 0 ? new Image("graphics/body_dress.png") :
-                new Image("graphics/body_suit.png");
+            new Image("graphics/body_suit.png");
         img.scaleX = img.scaleY = scale;
         mybody.addGraphic(img);
         img = new Image("graphics/face.png");
