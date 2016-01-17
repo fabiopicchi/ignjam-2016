@@ -40,8 +40,8 @@ class MainEngine extends Engine
 #if debug
         HXP.console.enable();
 #end
-        HXP.scene = new MinglrScene();
-		//HXP.scene = new TutorialScene();
+
+        HXP.scene = new MainMenuScene();
 		
         scaleX = scaleY = 0.625;
 

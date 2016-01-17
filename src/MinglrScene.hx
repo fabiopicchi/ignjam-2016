@@ -23,11 +23,11 @@ class MinglrScene extends Scene
     private var btno:Entity;
     private var btbytes:Entity;
     private var gotoDate:Entity;
-	private var _btPause:Entity;
+    private var _btBack:Entity;
     private var matchFlag:Bool = false;
-	private var song:Sfx;
-	private var btn_no:Sfx;
-	private var btn_yes:Sfx;
+    private var song:Sfx;
+    private var btn_no:Sfx;
+    private var btn_yes:Sfx;
     private var profile:Dynamic;
 	
 	private var tutActive:Int = 0;
@@ -64,13 +64,13 @@ class MinglrScene extends Scene
         add(minglrSearch);
 
         createMinglr();
-		
-		_btPause = new Entity();
-        _btPause.addGraphic(new Image("graphics/btpause.png"));
-        _btPause.x = 10; _btPause.y = 18;
-        _btPause.setHitbox(Math.floor(166 * HXP.engine.scaleX), 
+
+        _btBack = new Entity();
+        _btBack.addGraphic(new Image("graphics/squickr/squickr_bt_back.png"));
+        _btBack.x = 10; _btBack.y = 18;
+        _btBack.setHitbox(Math.floor(166 * HXP.engine.scaleX), 
                 Math.floor(166 * HXP.engine.scaleY));
-        add(_btPause);
+        add(_btBack);
 
         btno = new Entity();
         btno.addGraphic(new Image("graphics/pregame/minglr_search_btno.png"));
@@ -108,7 +108,6 @@ class MinglrScene extends Scene
 			tut.setHitbox(1920, 1200);
 			add(tut);	
 		}
-		
     }
 
     private function createMinglr(){
@@ -127,7 +126,7 @@ class MinglrScene extends Scene
 
         var hairColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
         var skinColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
- 
+
         var img = new Image("graphics/hair0" + MainEngine.currentDate[1] + ".png");
         img.color = hairColor;
         img.scaleX = img.scaleY = scale;
@@ -138,7 +137,7 @@ class MinglrScene extends Scene
         body.addGraphic(img);
 
         img = MainEngine.currentDate[0] == 0 ? new Image("graphics/body_dress.png") :
-                new Image("graphics/body_suit.png");
+            new Image("graphics/body_suit.png");
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
         img = new Image("graphics/face.png");
@@ -180,8 +179,6 @@ class MinglrScene extends Scene
         add(body);
 
         text.text = profile.Name + "\n" + "PLACEHOLDER";
-
-
     }
 
     private function itsAMatch(){
@@ -205,7 +202,7 @@ class MinglrScene extends Scene
         img.scaleX = img.scaleY = scale;
         mybody.addGraphic(img);
         img = MainEngine.charConfig[0] == 0 ? new Image("graphics/body_dress.png") :
-                new Image("graphics/body_suit.png");
+            new Image("graphics/body_suit.png");
         img.scaleX = img.scaleY = scale;
         mybody.addGraphic(img);
         img = new Image("graphics/face.png");
@@ -316,6 +313,7 @@ class MinglrScene extends Scene
 
     override public function update(){
         super.update();
+<<<<<<< HEAD
 		
 		if (tutActive != 0) {
 			if(Input.mousePressed && tut.collidePoint(tut.x * HXP.engine.scaleX,
@@ -337,27 +335,32 @@ class MinglrScene extends Scene
 		
 		if(Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX,
                     _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+=======
+
+        if(Input.mousePressed && _btBack.collidePoint(_btBack.x * HXP.engine.scaleX,
+                    _btBack.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+>>>>>>> 00ff9df2e61f457393757ff069e47c0381229146
             btn_no.play();
-			song.stop();		
-            //HXP.scene = new MainScene();
-		}
+            song.stop();		
+            HXP.scene = new MainMenuScene();
+        }
 
         if(Input.mousePressed){
             if(!matchFlag){
                 if(btno.collidePoint(btno.x * HXP.engine.scaleX,
-                        btno.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
-					btn_no.play();
+                            btno.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+                    btn_no.play();
                     createMinglr();
                 } 
                 if(btbytes.collidePoint(btbytes.x * HXP.engine.scaleX,
-                        btbytes.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+                            btbytes.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
                     btn_yes.play();
-					itsAMatch();
+                    itsAMatch();
                 }
             } else if(gotoDate.collidePoint(gotoDate.x * HXP.engine.scaleX,
-                    gotoDate.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
-				btn_yes.play();
-				song.stop();		
+                        gotoDate.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+                btn_yes.play();
+                song.stop();		
                 HXP.scene = new MainScene();
             }
         }
