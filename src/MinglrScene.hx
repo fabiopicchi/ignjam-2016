@@ -27,6 +27,7 @@ class MinglrScene extends Scene
 	private var song:Sfx;
 	private var btn_no:Sfx;
 	private var btn_yes:Sfx;
+    private var profile:Dynamic;
 
     override public function begin(){
         //MainEngine.songFader = new SfxFader(_sfxSong);
@@ -51,7 +52,7 @@ class MinglrScene extends Scene
         var textFormat = {
             font : "font/Dion.otf", 
             size : 64,
-            color : 0x000000,
+            color : 0xFFFFFF,
             align: TextFormatAlign.CENTER,
             wordWrap : true};
         text = new Text("sjdaoksjdoasjd aosijdaisd aosjd iajs oaijsdaisj", 399, 755, 1087, 0, textFormat);
@@ -95,10 +96,19 @@ class MinglrScene extends Scene
 
         body = new Entity(786, 390);
         var scale = 0.3;
-        var skinColor = MainEngine.SKIN_COLORS[Math.floor(Math.random() * MainEngine.SKIN_COLORS.length)];
-        var hairColor = MainEngine.HAIR_COLORS[Math.floor(Math.random() * MainEngine.HAIR_COLORS.length)];
-        var img = new Image("graphics/hair0" + 
-                (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1) + ".png");
+
+        profile = MainEngine.mindlrProfiles[MainEngine.currentDate[5] = Math.floor(
+                Math.random() * MainEngine.mindlrProfiles.length)];
+
+        MainEngine.currentDate[0] = profile.Gender != "male" ? 0 : 1;
+        MainEngine.currentDate[1] = (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1);
+        MainEngine.currentDate[2] = Math.floor(Math.random() * MainEngine.HAIR_COLORS.length);
+        MainEngine.currentDate[3] = Math.floor(Math.random() * MainEngine.SKIN_COLORS.length);
+
+        var skinColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
+        var hairColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
+ 
+        var img = new Image("graphics/hair0" + MainEngine.currentDate[1] + ".png");
         img.color = hairColor;
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
@@ -106,7 +116,8 @@ class MinglrScene extends Scene
         img.color = skinColor;
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
-        img = Math.random() > 0.5 ? new Image("graphics/body_dress.png") :
+
+        img = MainEngine.currentDate[0] == 0 ? new Image("graphics/body_dress.png") :
                 new Image("graphics/body_suit.png");
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
@@ -147,6 +158,10 @@ class MinglrScene extends Scene
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
         add(body);
+
+        text.text = profile.Name + "\n" + "PLACEHOLDER";
+
+
     }
 
     private function itsAMatch(){
@@ -240,6 +255,18 @@ class MinglrScene extends Scene
         img.x = 628; img.y = 696;
         matchFront.addGraphic(img);
 
+        var textFormat = {
+            font : "font/Dion.otf", 
+            size : 64,
+            color : 0xFFFFFF,
+            align: TextFormatAlign.CENTER,
+            wordWrap : true};
+        var text_1 = new Text("Eu!", 644, 710, 283, 0, textFormat);
+        matchFront.addGraphic(text_1);
+
+        var text_2 = new Text(profile.Name, 1007, 710, 283, 0, textFormat);
+        matchFront.addGraphic(text_2);
+
         for(g in cast(body.graphic, Graphiclist).children){
             var img = cast(g, Image);
             img.x = img.x / img.scaleX * scale;
@@ -296,6 +323,7 @@ class MinglrScene extends Scene
                 HXP.scene = new MainScene();
             }
         }
+
         // TODO - corrigir fade depois
         //MainEngine.songFader.fadeTo(0.0, 2.0);
         //_sfxSong.stop();

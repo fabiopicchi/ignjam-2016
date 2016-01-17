@@ -111,8 +111,6 @@ class MainScene extends Scene{
 			var personality = MainEngine.currentPerson;
 			arQuestionEmoji.push(Reflect.field(personality, "e_" + maxField));
         }
-		trace(arQuestionEmoji);
-        trace(arIndexes);
 
         var bg = new Entity();
         switch(MainEngine.currentStage){
@@ -140,7 +138,7 @@ class MainScene extends Scene{
         body.addGraphic(new Image("graphics/face_highlight.png"));
         add(body);
 
-        date = new PlayerDate(MainEngine.currentDate[0]);
+        date = new PlayerDate(MainEngine.currentDate[1]);
         add(date);
 
         _mouthCenter = new FacePart({x: 1212, y: 730, h_width: 0, h_height: 0});

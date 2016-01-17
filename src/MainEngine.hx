@@ -10,11 +10,13 @@ import openfl.Lib;
 class MainEngine extends Engine
 {
     public static var faceparts:StringMap<FacePart>;
-	public static var facepartsRaw:Array<Dynamic>;
-	public static var facepartsScoreRaw:Array<Dynamic>;
+    public static var facepartsRaw:Array<Dynamic>;
+    public static var facepartsScoreRaw:Array<Dynamic>;
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
-	
+    public static var mindlrProfiles:Array<Dynamic>;
+    public static var squickrs:Dynamic;
+
     public static var currentStage:Int = 1;
 
     public static var SKIN_COLORS:Array<Int> = [
@@ -28,8 +30,8 @@ class MainEngine extends Engine
     public static var charConfig:Array<Int>;
     public static var currentDate:Array<Int>;
     public static var songFader:SfxFader;
-	
-	public static var currentPerson:Dynamic;
+
+    public static var currentPerson:Dynamic;
 
     override public function init()
     {
@@ -39,32 +41,31 @@ class MainEngine extends Engine
         HXP.scene = new MinglrScene();
 
         scaleX = scaleY = 0.625;
-		
-		var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
 
-		var dataFPScore = Json.parse(Assets.getText("assets/facepartsscore.json"));
-		facepartsScoreRaw = cast(dataFPScore, Array<Dynamic>);
-		
+        var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
+
+        var dataFPScore = Json.parse(Assets.getText("assets/facepartsscore.json"));
+        facepartsScoreRaw = cast(dataFPScore, Array<Dynamic>);
+
         var dataFP = Json.parse(Assets.getText("assets/faceparts.json"));		
         facepartsRaw = cast(dataFP, Array<Dynamic>);
         faceparts = new StringMap<FacePart>();
 
         for (f in facepartsRaw) {
-			var key:String = f.side + "_" + f.slot;
-			trace("key: " + key);
+            var key:String = f.side + "_" + f.slot;
             if(!faceparts.exists(key)){
                 var fp = new FacePart(Reflect.field(positionData, key));
-				fp.type = key;
+                fp.type = key;
                 faceparts.set(key, fp);
             }
-			// score
+	    // score
             faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }
-		
-		
 
         questions = Json.parse(Assets.getText("assets/questions.json"));
         people = Json.parse(Assets.getText("assets/people.json"));
+        mindlrProfiles = Json.parse(Assets.getText("assets/mindlr-profiles.json"));
+        squickrs = Json.parse(Assets.getText("assets/squickrs.json"));
 
         charConfig = [
             Math.floor(Math.random() * 2), 
@@ -74,14 +75,18 @@ class MainEngine extends Engine
         ];
 
         currentDate = [
+            Math.floor(Math.random() * 2), 
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
-            Math.floor(Math.random() * people.length)
+            Math.floor(Math.random() * HAIR_COLORS.length),
+            Math.floor(Math.random() * SKIN_COLORS.length),
+            Math.floor(Math.random() * people.length),
+            Math.floor(Math.random() * mindlrProfiles.length)
         ];
-		
-		// isso daqui vai virar o resultado do minglr 
-		currentPerson = people[currentDate[1]];
-		
-		songFader = null;
+
+        // isso daqui vai virar o resultado do minglr 
+        currentPerson = people[currentDate[4]];
+
+        songFader = null;
     }
 
     public static function main() { Lib.current.addChild(new MainEngine()); }
