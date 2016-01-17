@@ -19,6 +19,12 @@ class SquickrScene extends Scene
     private var btNext:Entity;
     private var showNext:Bool = true;
     private var score:Float;
+	private var song:Sfx;
+	private var cell:Sfx;
+	private var win:Sfx;
+	private var lose:Sfx;
+	private var btn_no:Sfx;
+	private var btn_yes:Sfx;
 
     public function new(showNext:Bool, score:Float){
         super();
@@ -179,10 +185,27 @@ class SquickrScene extends Scene
                     Math.floor(166 * HXP.engine.scaleY));
             add(btNext); 
         }
+		
+		// sfx e musica
+		song = new Sfx("audio/amb_night.ogg");
+		song.loop(0.5);
+		win = new Sfx("audio/song_win.ogg");
+		lose = new Sfx("audio/song_lose.ogg");
+		if (score >= 20) {
+			win.play();
+		}
+		else {
+			lose.play();
+		}
+		//addTween(new Tween(1, TweenType.OneShot, playWinLose).start();
+		cell = new Sfx("audio/cell_vibrate.ogg");
+		cell.play();
+		btn_no = new Sfx("audio/button_no.ogg");
+		btn_yes = new Sfx("audio/button_yes.ogg");
     }
 
     private function result(data:Dynamic){
-
+		
     }
 
     override public function update(){
@@ -192,6 +215,8 @@ class SquickrScene extends Scene
                         Input.mouseX,
                         Input.mouseY))
             {
+				song.stop();
+				btn_no.play();
                 HXP.scene = new MinglrScene();
             }
             
@@ -200,6 +225,8 @@ class SquickrScene extends Scene
                         Input.mouseX,
                         Input.mouseY))
             {
+				song.stop();
+				btn_yes.play();
                 MainEngine.nextStage();
             }
         }

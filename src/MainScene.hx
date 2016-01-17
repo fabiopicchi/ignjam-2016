@@ -63,7 +63,7 @@ class MainScene extends Scene{
         _sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
         _sfxMap.set("click", new Sfx("audio/click_termometer_up.ogg"));
         _sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
-        _sfxMap.set("clock_alarm", new Sfx("audio/clock_alarm.ogg"));
+        _sfxMap.set("timer_alarm", new Sfx("audio/timer_alarm.ogg"));
 
         switch(MainEngine.currentStage) 
         {
@@ -214,7 +214,7 @@ class MainScene extends Scene{
     private function levelOver() {
         // sfx
         _sfxMap.get("clock_tic_tac").stop();
-        _sfxMap.get("clock_alarm").play();
+        _sfxMap.get("timer_alarm").play();
 
         // calculo de score e armazenamento de caras anteriores
         var answer = new Array<String>();
