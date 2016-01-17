@@ -1,6 +1,7 @@
 import com.haxepunk.Engine;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.tweens.sound.SfxFader;
 import haxe.Json;
 import haxe.ds.StringMap;
 import openfl.Assets;
@@ -11,6 +12,8 @@ class MainEngine extends Engine
     public static var faceparts:StringMap<FacePartExpression>;
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
+	
+    public static var currentStage:Int = 1;
 
     public static var SKIN_COLORS:Array<Int> = [
         0xFFd282, 0xe68650, 0xb46e32, 0x965028
@@ -22,7 +25,7 @@ class MainEngine extends Engine
 
     public static var charConfig:Array<Int>;
     public static var currentDate:Array<Int>;
-    public static var currentStage:Int = 0;
+    public static var songFader:SfxFader;
 
     override public function init()
     {
@@ -75,17 +78,19 @@ class MainEngine extends Engine
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
             Math.floor(Math.random() * people.length)
         ];
+		
+		songFader = null;
     }
 
     public static function main() { Lib.current.addChild(new MainEngine()); }
 
     public static function nextStage() {
-        if(currentStage < 2)
+        if(currentStage < 3)
         {
             currentStage++;
             HXP.scene = new MainScene();
         } else {
-            currentStage = 0;
+            currentStage = 1;
             HXP.scene = new MenuScene();
         }
     }

@@ -21,7 +21,7 @@ class MainScene extends Scene{
     private var _pausedMenu:Entity;
 
     private var _answers:Array<Array<Expression>>;
-    private var _sfxMap:StringMap<Array<Sfx>> = new StringMap<Array<Sfx>>();
+    private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
 
     // Entities
     private var l_eyebrow:FacePartExpression;
@@ -48,9 +48,28 @@ class MainScene extends Scene{
         _interactiveFaceParts = new Array<FacePartExpression>();
         _questions = [];
 
-        _sfxMap.set("nose", new Array<Sfx>());
-        _sfxMap.get("nose").push(new Sfx("audio/change_nose_01_a.wav"));
-        _sfxMap.get("nose").push(new Sfx("audio/change_nose_01_b.wav"));
+        _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
+		_sfxMap.set("mouth", new Sfx("audio/change_mouth.ogg"));
+		_sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
+		_sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
+		_sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
+		
+		switch(MainEngine.currentStage) 
+		{
+			case 1: {
+				_sfxMap.set("song", new Sfx("audio/song_coffeeshop.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_coffeeshop.ogg"));
+			}
+				
+			case 2: {
+				_sfxMap.set("song", new Sfx("audio/song_bar.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_bar.ogg"));
+			}
+			case 3: {
+				_sfxMap.set("song", new Sfx("audio/song_night.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_night.ogg"));
+			}
+		}
     }
 
     override public function begin(){
@@ -70,11 +89,11 @@ class MainScene extends Scene{
 
         var bg = new Entity();
         switch(MainEngine.currentStage){
-            case 0:
-                bg.addGraphic(new Image("graphics/BG_Cafe_blur.png"));
             case 1:
-                bg.addGraphic(new Image("graphics/BG_Balada01.png"));
+                bg.addGraphic(new Image("graphics/BG_Cafe_blur.png"));
             case 2:
+                bg.addGraphic(new Image("graphics/BG_Balada01.png"));
+            case 3:
                 bg.addGraphic(new Image("graphics/BG_Casa.png"));
         }
         add(bg);
@@ -151,13 +170,17 @@ class MainScene extends Scene{
                 Math.floor(HXP.height / HXP.engine.scaleY), 0x000000, 0.4);
         _pausedMenu.visible = _paused;
         add(_pausedMenu);
+        _sfxMap.get("song").loop();
+        _sfxMap.get("amb").loop();    
 
-        _baloon.animateTalk(_questions[_currentLevel++].text, startLevel);
+        _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
         date.startTalking();
     }
 
     private function startLevel(){
-        _actionBar.start(_questions[_currentLevel].duration, levelOver);
+        _actionBar.start(_questions[_currentLevel++].duration, levelOver);
+        // trocar para quando dispara uma nova question
+        _sfxMap.get("clock_tic_tac").loop();
         date.stopTalking();
     }
 
@@ -170,7 +193,7 @@ class MainScene extends Scene{
         _answers.push(arExpressions);
 
         if(_answers.length < _numLevels){
-            _baloon.animateTalk(_questions[_currentLevel++].text, startLevel);
+            _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
             date.startTalking();
             _turnCounter.updateCounter();
         }
@@ -195,12 +218,13 @@ class MainScene extends Scene{
         super.update();
 
         if(Input.mousePressed && nose.collideMouseScale()){
-            var arSfx = _sfxMap.get("nose");
-            arSfx[Math.floor(Math.random() * arSfx.length)].play();
+            _sfxMap.get("nose").play();
         }
 
         var l_mouthRes = l_mouth.collideMouseScale();
         if(Input.mousePressed && (l_mouthRes || r_mouth.collideMouseScale())){
+	    _sfxMap.get("mouth").play();
+
             var sideStatus = 0;
             var sideEntity = (l_mouthRes ? l_mouth : r_mouth);
             sideStatus = Math.floor(sideEntity.index / 2);
@@ -233,6 +257,12 @@ class MainScene extends Scene{
                 }
             }
         }
+
+        if(Input.mousePressed && (r_eye.collideMouseScale()|| l_eye.collideMouseScale()))
+	    _sfxMap.get("eye").play();
+
+        if(Input.mousePressed && (r_eyebrow.collideMouseScale()|| l_eyebrow.collideMouseScale()))
+	    _sfxMap.get("eyebrow").play();
     }
 
     override public function end(){
@@ -240,5 +270,4 @@ class MainScene extends Scene{
             remove(f);
         }
     }
-
 }

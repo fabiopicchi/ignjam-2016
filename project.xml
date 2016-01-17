@@ -13,7 +13,6 @@
 
 	<!-- classpath, haxe libs -->
 	<haxelib name="HaxePunk" />
-        <haxelib name="HaxePunkTmx" />
 
 	<!-- assets -->
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
