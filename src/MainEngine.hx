@@ -10,7 +10,8 @@ import openfl.Lib;
 class MainEngine extends Engine
 {
     public static var faceparts:StringMap<FacePart>;
-	public static var facepartsScore:StringMap<Dynamic>;
+	public static var facepartsRaw:Array<Dynamic>;
+	public static var facepartsScoreRaw:Array<Dynamic>;
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
 	
@@ -42,13 +43,13 @@ class MainEngine extends Engine
 		var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
 
 		var dataFPScore = Json.parse(Assets.getText("assets/facepartsscore.json"));
-		var arFPScore:Array<Dynamic> = cast(dataFPScore, Array<Dynamic>);
+		facepartsScoreRaw = cast(dataFPScore, Array<Dynamic>);
 		
         var dataFP = Json.parse(Assets.getText("assets/faceparts.json"));		
-        var arFaceparts:Array<Dynamic> = cast(dataFP, Array<Dynamic>);
+        facepartsRaw = cast(dataFP, Array<Dynamic>);
         faceparts = new StringMap<FacePart>();
 
-        for (f in arFaceparts) {
+        for (f in facepartsRaw) {
 			var key:String = f.side + "_" + f.slot;
 			trace("key: " + key);
             if(!faceparts.exists(key)){
@@ -58,7 +59,7 @@ class MainEngine extends Engine
             }
 
 			// score
-            faceparts.get(key).addGraphic(new Image("graphics/" + f.name + ".png"));
+            faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }
 		
 		
