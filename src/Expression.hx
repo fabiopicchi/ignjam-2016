@@ -1,13 +1,13 @@
 class Expression{
-    public var swag:Int;
-    public var joy:Int;
-    public var sadness:Int;
-    public var anger:Int;
-    public var excitement:Int;
-    public var surprise:Int;
-    public var disgust:Int;
+    public var swag:Float;
+    public var joy:Float;
+    public var sadness:Float;
+    public var anger:Float;
+    public var excitement:Float;
+    public var surprise:Float;
+    public var disgust:Float;
 
     public function new(){
-        swag = joy = sadness = anger = excitement = surprise = disgust = 10;
+        swag = joy = sadness = anger = excitement = surprise = disgust = 0;
     }
 }

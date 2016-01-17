@@ -15,22 +15,28 @@ class MainScene extends Scene{
     private var _numLevels:Int;
     private var _currentLevel:Int = 0;
 
-    private var _interactiveFaceParts:Array<FacePartExpression>;
+    private var _interactiveFaceParts:StringMap<FacePart>;
     private var _actionBar:ActionBar;
     private var _paused:Bool;
     private var _pausedMenu:Entity;
 
     private var _answers:Array<Array<Expression>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
+	
+	// Score
+	private var stageScore:Float;
+	private var expressionScores:Expression;
+	private var variationScore:Float;
+	private var lastFaceParts:Array<FacePart>;
 
     // Entities
-    private var l_eyebrow:FacePartExpression;
-    private var r_eyebrow:FacePartExpression;
-    private var l_eye:FacePartExpression;
-    private var r_eye:FacePartExpression;
-    private var nose:FacePartExpression;
-    private var l_mouth:FacePartExpression;
-    private var r_mouth:FacePartExpression;
+    private var l_eyebrow:FacePart;
+    private var r_eyebrow:FacePart;
+    private var l_eye:FacePart;
+    private var r_eye:FacePart;
+    private var nose:FacePart;
+    private var l_mouth:FacePart;
+    private var r_mouth:FacePart;
     private var _mouthCenter:FacePart;
     private var date:PlayerDate;
     
@@ -45,7 +51,7 @@ class MainScene extends Scene{
 
         _numLevels = NUM_LEVELS;
         _answers = new Array<Array<Expression>>();
-        _interactiveFaceParts = new Array<FacePartExpression>();
+        _interactiveFaceParts = new StringMap<FacePart>();
         _questions = [];
 
         _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
@@ -135,14 +141,14 @@ class MainScene extends Scene{
                     l_eye = f;
                 case "r_eye":
                     r_eye = f;
-                case "nose":
+                case "_nose":
                     nose = f;
                 case "l_mouth":
                     l_mouth = f;
                 case "r_mouth":
                     r_mouth = f;
             }
-            _interactiveFaceParts.push(f);
+            _interactiveFaceParts.set(f.type, f);
         }
 
         _turnCounter = new TurnCounter();
@@ -184,14 +190,78 @@ class MainScene extends Scene{
         date.stopTalking();
     }
 
-    private function levelOver(){
-        var arExpressions = new Array<Expression>();
-
-        for(fp in _interactiveFaceParts)
-            arExpressions.push(fp.expression);
-
-        _answers.push(arExpressions);
-
+    private function levelOver() {
+		
+        //_answers.push(0);
+		
+		var arCurrentFPData = new StringMap<Dynamic>();
+		for (ifp in _interactiveFaceParts) {
+			var id = ifp.getPartName();
+			// busca todos os dados no json
+			for (fpdata in MainEngine.facepartsRaw) {
+				if (fpdata.name == ifp.getPartName()) {
+					arCurrentFPData.set(fpdata.side+"_"+fpdata.slot, fpdata);
+				}
+			}
+		}
+		
+		// eyebrow score
+		var nL_eyebrow = _interactiveFaceParts.get("l_eyebrow").getPartName();
+		
+		var eyebrowScore = findFacePartExpression(
+			"eyebrow",
+			arCurrentFPData.get("l_eyebrow").state,
+			arCurrentFPData.get("r_eyebrow").state);
+		
+		var eyeScore = findFacePartExpression(
+			"eye",
+			arCurrentFPData.get("l_eye").state,
+			arCurrentFPData.get("r_eye").state);
+			
+		var noseScore = findFacePartExpression(
+			"nose",
+			arCurrentFPData.get("_nose").state,
+			"");
+			
+		var mouthScore = findFacePartExpression(
+			"mouth",
+			arCurrentFPData.get("l_mouth").state,
+			arCurrentFPData.get("r_mouth").state);
+			
+		// calcular score da expressao
+		expressionScores = new Expression();
+		
+		/*
+		for (ifp in _interactiveFaceParts) {
+			var id = ifp.getPartName();
+			for (fpdata in MainEngine.facepartsRaw) {
+				if (fpdata.name == id) {
+					
+				}
+			}
+			
+			
+			/*
+			expressionScores.swag += fp.expression.swag * _questions[_currentLevel].swag * MainEngine.currentPerson.swag;
+			expressionScores.joy += fp.expression.joy * _questions[_currentLevel].joy * MainEngine.currentPerson.joy;
+			expressionScores.sadness += fp.expression.sadness * _questions[_currentLevel].sadness * MainEngine.currentPerson.sadness;
+			expressionScores.anger += fp.expression.anger * _questions[_currentLevel].anger * MainEngine.currentPerson.anger;
+			expressionScores.excitement += fp.expression.excitement * _questions[_currentLevel].excitement * MainEngine.currentPerson.excitement;
+			expressionScores.surprise += fp.expression.surprise * _questions[_currentLevel].surprise * MainEngine.currentPerson.surprise;
+			expressionScores.disgust += fp.expression.disgust * _questions[_currentLevel].disgust * MainEngine.currentPerson.disgust;
+			
+		}
+		
+		/*
+		// variacao
+		if (_currentLevel > 0) {
+			
+		}
+		*/
+		
+		
+		
+		// é final de fase?
         if(_answers.length < _numLevels){
             _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
             date.startTalking();
@@ -279,4 +349,35 @@ class MainScene extends Scene{
         r_mouth = null;
         _mouthCenter = null;
     }
+	
+	private function findFacePartExpression(slot:String, part1:String, part2:String):Expression
+	{
+		var result:Expression = new Expression();
+		for (fps in MainEngine.facepartsScoreRaw) {
+			if (fps.slot == slot) {
+				if (part2 == "") {
+					if (fps.part1 == part1) {
+						return extractExpressionFromObj(fps);
+					}
+				}
+				else if ((fps.part1 == part1 && fps.part2 == part2) ||
+					(fps.part1 == part2 && fps.part2 == part1)) {
+						return extractExpressionFromObj(fps);
+				}
+			}
+		}
+		return result;
+	}
+	
+	private function extractExpressionFromObj(obj:Dynamic) {
+		var e = new Expression();
+		e.swag = obj.swag;
+		e.joy = obj.joy;
+		e.sadness = obj.sadness;
+		e.anger = obj.anger;
+		e.excitement = obj.excitement;
+		e.surprise = obj.surprise;
+		e.disgust = obj.disgust;
+		return e;
+	}
 }
