@@ -80,8 +80,10 @@ class MinglrScene extends Scene
         var scale = 0.3;
         var skinColor = MainEngine.SKIN_COLORS[Math.floor(Math.random() * MainEngine.SKIN_COLORS.length)];
         var hairColor = MainEngine.HAIR_COLORS[Math.floor(Math.random() * MainEngine.HAIR_COLORS.length)];
-        var img = new Image("graphics/hair0" + 
-                (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1) + ".png");
+
+        MainEngine.currentDate[0] = (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1);
+
+        var img = new Image("graphics/hair0" + MainEngine.currentDate[0] + ".png");
         img.color = hairColor;
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
@@ -268,6 +270,7 @@ class MinglrScene extends Scene
                 HXP.scene = new MainScene();
             }
         }
+
         // TODO - corrigir fade depois
         //MainEngine.songFader.fadeTo(0.0, 2.0);
         //_sfxSong.stop();

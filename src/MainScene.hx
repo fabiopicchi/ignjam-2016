@@ -91,8 +91,6 @@ class MainScene extends Scene{
             _questions.push(MainEngine.questions[index]);
         }
 
-        trace(arIndexes);
-
         var bg = new Entity();
         switch(MainEngine.currentStage){
             case 1:
