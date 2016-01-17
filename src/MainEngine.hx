@@ -14,6 +14,7 @@ class MainEngine extends Engine
     public static var facepartsScoreRaw:Array<Dynamic>;
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
+    public static var mindlrProfiles:Array<Dynamic>;
 
     public static var currentStage:Int = 1;
 
@@ -61,10 +62,9 @@ class MainEngine extends Engine
             faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }
 
-
-
         questions = Json.parse(Assets.getText("assets/questions.json"));
         people = Json.parse(Assets.getText("assets/people.json"));
+        mindlrProfiles = Json.parse(Assets.getText("assets/mindlr-profiles.json"));
 
         charConfig = [
             Math.floor(Math.random() * 2), 
