@@ -123,6 +123,8 @@ class MinglrScene extends Scene
         MainEngine.currentDate[1] = (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1);
         MainEngine.currentDate[2] = Math.floor(Math.random() * MainEngine.HAIR_COLORS.length);
         MainEngine.currentDate[3] = Math.floor(Math.random() * MainEngine.SKIN_COLORS.length);
+		MainEngine.currentDate[4] = Math.floor(Math.random() * MainEngine.people.length);
+		MainEngine.currentPerson = MainEngine.people[MainEngine.currentDate[4]];
 
         var hairColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
         var skinColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
@@ -178,7 +180,8 @@ class MinglrScene extends Scene
         body.addGraphic(img);
         add(body);
 
-        text.text = profile.Name + "\n" + "PLACEHOLDER";
+        text.text = profile.Name + "\n" + 
+			Reflect.field(MainEngine.peopleFlavorText, MainEngine.currentPerson.presetname);
     }
 
     private function itsAMatch(){
