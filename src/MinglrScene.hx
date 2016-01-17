@@ -22,7 +22,11 @@ class MinglrScene extends Scene
     private var btno:Entity;
     private var btbytes:Entity;
     private var gotoDate:Entity;
+	private var _btPause:Entity;
     private var matchFlag:Bool = false;
+	private var song:Sfx;
+	private var btn_no:Sfx;
+	private var btn_yes:Sfx;
 
     override public function begin(){
         //MainEngine.songFader = new SfxFader(_sfxSong);
@@ -55,6 +59,13 @@ class MinglrScene extends Scene
         add(minglrSearch);
 
         createMinglr();
+		
+		_btPause = new Entity();
+        _btPause.addGraphic(new Image("graphics/btpause.png"));
+        _btPause.x = 10; _btPause.y = 18;
+        _btPause.setHitbox(Math.floor(166 * HXP.engine.scaleX), 
+                Math.floor(166 * HXP.engine.scaleY));
+        add(_btPause);
 
         btno = new Entity();
         btno.addGraphic(new Image("graphics/pregame/minglr_search_btno.png"));
@@ -71,6 +82,12 @@ class MinglrScene extends Scene
         btbytes.setHitbox(Math.floor(166 * HXP.engine.scaleX), 
                 Math.floor(166 * HXP.engine.scaleY));
         add(btbytes); 
+		
+		song = new Sfx("audio/song_title.ogg");
+		song.loop();
+		
+		btn_no = new Sfx("audio/button_no.ogg");
+		btn_yes = new Sfx("audio/button_yes.ogg");
     }
 
     private function createMinglr(){
@@ -252,19 +269,30 @@ class MinglrScene extends Scene
 
     override public function update(){
         super.update();
+		
+		if(Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX,
+                    _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+            btn_no.play();
+			song.stop();		
+            //HXP.scene = new MainScene();
+		}
 
         if(Input.mousePressed){
             if(!matchFlag){
                 if(btno.collidePoint(btno.x * HXP.engine.scaleX,
-                            btno.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)){
+                        btno.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+					btn_no.play();
                     createMinglr();
                 } 
                 if(btbytes.collidePoint(btbytes.x * HXP.engine.scaleX,
-                            btbytes.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
-                    itsAMatch();
+                        btbytes.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+                    btn_yes.play();
+					itsAMatch();
                 }
             } else if(gotoDate.collidePoint(gotoDate.x * HXP.engine.scaleX,
                     gotoDate.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+				btn_yes.play();
+				song.stop();		
                 HXP.scene = new MainScene();
             }
         }
@@ -274,3 +302,4 @@ class MinglrScene extends Scene
         //HXP.scene = new MainScene();
     }
 }
+
