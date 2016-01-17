@@ -313,7 +313,7 @@ class MinglrScene extends Scene
 
     override public function update(){
         super.update();
-<<<<<<< HEAD
+
 		
 		if (tutActive != 0) {
 			if(Input.mousePressed && tut.collidePoint(tut.x * HXP.engine.scaleX,
@@ -333,13 +333,8 @@ class MinglrScene extends Scene
 		}
 		
 		
-		if(Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX,
-                    _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
-=======
-
-        if(Input.mousePressed && _btBack.collidePoint(_btBack.x * HXP.engine.scaleX,
+		if(Input.mousePressed && _btBack.collidePoint(_btBack.x * HXP.engine.scaleX,
                     _btBack.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
->>>>>>> 00ff9df2e61f457393757ff069e47c0381229146
             btn_no.play();
             song.stop();		
             HXP.scene = new MainMenuScene();
