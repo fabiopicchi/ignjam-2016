@@ -23,14 +23,14 @@ class MainScene extends Scene{
 
     private var _answers:Array<Array<String>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
-	
-	private var arQuestionEmoji:Array<String>;
-	
-	// Score
-	private var stageScore:Float;
-	private var expressionScores:Expression;
-	private var variationScore:Float;
-	private var lastFaceParts:Array<FacePart>;
+
+    private var arQuestionEmoji:Array<String>;
+
+    // Score
+    private var stageScore:Float;
+    private var expressionScores:Expression;
+    private var variationScore:Float;
+    private var lastFaceParts:Array<FacePart>;
 
     // Entities
     private var l_eyebrow:FacePart;
@@ -42,7 +42,7 @@ class MainScene extends Scene{
     private var r_mouth:FacePart;
     private var _mouthCenter:FacePart;
     private var date:PlayerDate;
-    
+
     //HUD
     private var _btPause:Entity;
     private var _baloon:TalkBaloon;
@@ -58,58 +58,58 @@ class MainScene extends Scene{
         _questions = [];
 
         _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
-		_sfxMap.set("mouth", new Sfx("audio/change_mouth.ogg"));
-		_sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
-		_sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
-		_sfxMap.set("click", new Sfx("audio/click_termometer_up.ogg"));
-		_sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
-		_sfxMap.set("clock_alarm", new Sfx("audio/clock_alarm.ogg"));
-		
-		switch(MainEngine.currentStage) 
-		{
-			case 1: {
-				_sfxMap.set("song", new Sfx("audio/song_coffeeshop.ogg"));
-				_sfxMap.set("amb", new Sfx("audio/amb_coffeeshop.ogg"));
-			}
-				
-			case 2: {
-				_sfxMap.set("song", new Sfx("audio/song_bar.ogg"));
-				_sfxMap.set("amb", new Sfx("audio/amb_bar.ogg"));
-			}
-			case 3: {
-				_sfxMap.set("song", new Sfx("audio/song_night.ogg"));
-				_sfxMap.set("amb", new Sfx("audio/amb_night.ogg"));
-			}
-		}
+        _sfxMap.set("mouth", new Sfx("audio/change_mouth.ogg"));
+        _sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
+        _sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
+        _sfxMap.set("click", new Sfx("audio/click_termometer_up.ogg"));
+        _sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
+        _sfxMap.set("clock_alarm", new Sfx("audio/clock_alarm.ogg"));
+
+        switch(MainEngine.currentStage) 
+        {
+            case 1: {
+                _sfxMap.set("song", new Sfx("audio/song_coffeeshop.ogg"));
+                _sfxMap.set("amb", new Sfx("audio/amb_coffeeshop.ogg"));
+            }
+
+            case 2: {
+                _sfxMap.set("song", new Sfx("audio/song_bar.ogg"));
+                _sfxMap.set("amb", new Sfx("audio/amb_bar.ogg"));
+            }
+            case 3: {
+                _sfxMap.set("song", new Sfx("audio/song_night.ogg"));
+                _sfxMap.set("amb", new Sfx("audio/amb_night.ogg"));
+            }
+        }
     }
 
     override public function begin(){
-		
-		var index = -1;
+
+        var index = -1;
         var arIndexes = [];
-		arQuestionEmoji = [];
-		trace(MainEngine.currentStage);
+        arQuestionEmoji = [];
+        trace(MainEngine.currentStage);
         for(i in 0...(_numLevels)){
             do {               
-				index = Math.floor(MainEngine.questions.length * Math.random());
-				trace("level: " + MainEngine.questions[index].level);
+                index = Math.floor(MainEngine.questions.length * Math.random());
+                trace("level: " + MainEngine.questions[index].level);
             } while (arIndexes.indexOf(index) >= 0 ||
-					 MainEngine.questions[index].level != MainEngine.currentStage);
+                    MainEngine.questions[index].level != MainEngine.currentStage);
             arIndexes.push(index);
             _questions.push(MainEngine.questions[index]);
-			// emojis para questoes
-			var qExp = extractExpressionFromObj(MainEngine.questions[index]);
-			var maxValue = 0.0;
-			var maxField = "swag";
-			for (field in Reflect.fields(qExp)) {
-				var value = Math.abs(Reflect.field(qExp, field));
-				if (value > maxValue) {
-					maxValue = value;
-					maxField = field;
-				}			
-			}
-			var personality = MainEngine.currentPerson;
-			arQuestionEmoji.push(Reflect.field(personality, "e_" + maxField));
+            // emojis para questoes
+            var qExp = extractExpressionFromObj(MainEngine.questions[index]);
+            var maxValue = 0.0;
+            var maxField = "swag";
+            for (field in Reflect.fields(qExp)) {
+                var value = Math.abs(Reflect.field(qExp, field));
+                if (value > maxValue) {
+                    maxValue = value;
+                    maxField = field;
+                }			
+            }
+            var personality = MainEngine.currentPerson;
+            arQuestionEmoji.push(Reflect.field(personality, "e_" + maxField));
         }
 
         var bg = new Entity();
@@ -199,9 +199,9 @@ class MainScene extends Scene{
         _sfxMap.get("amb").loop();
 
         _baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);
-		_sfxMap.get("click").play();
+        _sfxMap.get("click").play();
         date.startTalking();
-		stageScore = 0;
+        stageScore = 0;
     }
 
     private function startLevel(){
@@ -213,128 +213,128 @@ class MainScene extends Scene{
 
     private function levelOver() {
         // sfx
-		_sfxMap.get("clock_tic_tac").stop();
-		_sfxMap.get("clock_alarm").play();
-		
-		// calculo de score e armazenamento de caras anteriores
-		var answer = new Array<String>();
-		var arCurrentFPData = new StringMap<Dynamic>();
-		for (ifp in _interactiveFaceParts) {
-			var id = ifp.getPartName();
-			answer.push(id);
-			// busca todos os dados no json
-			for (fpdata in MainEngine.facepartsRaw) {
-				if (fpdata.name == ifp.getPartName()) {
-					arCurrentFPData.set(fpdata.side+"_"+fpdata.slot, fpdata);
-				}
-			}
-		}
-		_answers.push(answer);
-		
-		var eyebrowScore = findFacePartExpression(
-			"eyebrow",
-			arCurrentFPData.get("l_eyebrow").state,
-			arCurrentFPData.get("r_eyebrow").state);
-		
-		var eyeScore = findFacePartExpression(
-			"eye",
-			arCurrentFPData.get("l_eye").state,
-			arCurrentFPData.get("r_eye").state);
-			
-		var noseScore = findFacePartExpression(
-			"nose",
-			arCurrentFPData.get("_nose").state,
-			"");
-			
-		var mouthScore = findFacePartExpression(
-			"mouth",
-			arCurrentFPData.get("l_mouth").state,
-			arCurrentFPData.get("r_mouth").state);
-		
-		// calcular score da expressao
-		trace("----------------- ROUND " + _answers.length);
-		var personality = extractExpressionFromObj(MainEngine.currentPerson);
-		expressionScores = new Expression();
-		var attractionAggregate:Float = 0;
-		for (field in Reflect.fields(expressionScores)) {
-			var v = 0;
-			v += Reflect.field(eyebrowScore, field);
-			v += Reflect.field(eyeScore, field);
-			v += Reflect.field(noseScore, field);
-			v += Reflect.field(mouthScore, field);
-			var pT = Reflect.field(personality, field);
-			Reflect.setField(expressionScores, field, v * pT);
-			attractionAggregate += v * pT;			
-		}
-		trace("attraction raw: " + attractionAggregate);
-		// calcula variacao
-		var repetition:Int = 0;
-		if (_answers.length > 1) {
-			for (i in 0..._answers[_answers.length - 2].length)
-			{
-				if (_answers[_answers.length - 2][i] == answer[i]) {
-					repetition++;
-				}
-			}
-		}
-		trace("repetition: " + repetition);
-		// aplicar punicao por repeticao
-		var replicaRepeticao:Array<String> = null;
-		if(repetition >= 4) {
-			attractionAggregate -= Math.pow( repetition - 3, 2) * 10;
-			replicaRepeticao = [ "Você está prestando atenção?",
-				"Hm... Você não está ouvindo, né?",
-				"Eu estou te incomodando com a minha conversa?" ];
-		}
-		trace("attraction final: " + attractionAggregate);
-		stageScore += attractionAggregate;
-		stageScore = HXP.clamp(stageScore, -200, 200);
-		trace("score: " + stageScore);
-		
-		// calular emoji
-		var emojiScore = "neutral";
-		if (attractionAggregate < -30) {
-			emojiScore = "why";
-		}
-		else if (attractionAggregate < -10) {
-			emojiScore = "badeyes";
-		}
-		else if (attractionAggregate < 10) {
-			emojiScore = "neutral";
-		}
-		else if (attractionAggregate < 30) {
-			emojiScore = "smile";
-		}
-		else {
-			emojiScore = "broadsmile";
-		}
-		
-		// é final de fase?
+        _sfxMap.get("clock_tic_tac").stop();
+        _sfxMap.get("clock_alarm").play();
+
+        // calculo de score e armazenamento de caras anteriores
+        var answer = new Array<String>();
+        var arCurrentFPData = new StringMap<Dynamic>();
+        for (ifp in _interactiveFaceParts) {
+            var id = ifp.getPartName();
+            answer.push(id);
+            // busca todos os dados no json
+            for (fpdata in MainEngine.facepartsRaw) {
+                if (fpdata.name == ifp.getPartName()) {
+                    arCurrentFPData.set(fpdata.side+"_"+fpdata.slot, fpdata);
+                }
+            }
+        }
+        _answers.push(answer);
+
+        var eyebrowScore = findFacePartExpression(
+                "eyebrow",
+                arCurrentFPData.get("l_eyebrow").state,
+                arCurrentFPData.get("r_eyebrow").state);
+
+        var eyeScore = findFacePartExpression(
+                "eye",
+                arCurrentFPData.get("l_eye").state,
+                arCurrentFPData.get("r_eye").state);
+
+        var noseScore = findFacePartExpression(
+                "nose",
+                arCurrentFPData.get("_nose").state,
+                "");
+
+        var mouthScore = findFacePartExpression(
+                "mouth",
+                arCurrentFPData.get("l_mouth").state,
+                arCurrentFPData.get("r_mouth").state);
+
+        // calcular score da expressao
+        trace("----------------- ROUND " + _answers.length);
+        var personality = extractExpressionFromObj(MainEngine.currentPerson);
+        expressionScores = new Expression();
+        var attractionAggregate:Float = 0;
+        for (field in Reflect.fields(expressionScores)) {
+            var v = 0;
+            v += Reflect.field(eyebrowScore, field);
+            v += Reflect.field(eyeScore, field);
+            v += Reflect.field(noseScore, field);
+            v += Reflect.field(mouthScore, field);
+            var pT = Reflect.field(personality, field);
+            Reflect.setField(expressionScores, field, v * pT);
+            attractionAggregate += v * pT;			
+        }
+        trace("attraction raw: " + attractionAggregate);
+        // calcula variacao
+        var repetition:Int = 0;
+        if (_answers.length > 1) {
+            for (i in 0..._answers[_answers.length - 2].length)
+            {
+                if (_answers[_answers.length - 2][i] == answer[i]) {
+                    repetition++;
+                }
+            }
+        }
+        trace("repetition: " + repetition);
+        // aplicar punicao por repeticao
+        var replicaRepeticao:Array<String> = null;
+        if(repetition >= 4) {
+            attractionAggregate -= Math.pow( repetition - 3, 2) * 10;
+            replicaRepeticao = [ "Você está prestando atenção?",
+            "Hm... Você não está ouvindo, né?",
+            "Eu estou te incomodando com a minha conversa?" ];
+        }
+        trace("attraction final: " + attractionAggregate);
+        stageScore += attractionAggregate;
+        stageScore = HXP.clamp(stageScore, -200, 200);
+        trace("score: " + stageScore);
+
+        // calular emoji
+        var emojiScore = "neutral";
+        if (attractionAggregate < -30) {
+            emojiScore = "why";
+        }
+        else if (attractionAggregate < -10) {
+            emojiScore = "badeyes";
+        }
+        else if (attractionAggregate < 10) {
+            emojiScore = "neutral";
+        }
+        else if (attractionAggregate < 30) {
+            emojiScore = "smile";
+        }
+        else {
+            emojiScore = "broadsmile";
+        }
+
+        // é final de fase?
         if (_answers.length < _numLevels) {
-			if (replicaRepeticao != null) {
-				var i = Math.floor(3 * Math.random());
-				_baloon.animateTalk(replicaRepeticao[i], emojiScore, endReply);	
-				_sfxMap.get("click").play();
-			}
-			else {
-				_baloon.animateTalk("", emojiScore,  endReply);
-				_sfxMap.get("click").play();
-			}
+            if (replicaRepeticao != null) {
+                var i = Math.floor(3 * Math.random());
+                _baloon.animateTalk(replicaRepeticao[i], emojiScore, endReply);	
+                _sfxMap.get("click").play();
+            }
+            else {
+                _baloon.animateTalk("", emojiScore,  endReply);
+                _sfxMap.get("click").play();
+            }
             // date.startTalking();
             _turnCounter.updateCounter();
         }
         else {
             stageOver();
-		}
+        }
     }
 
     private function stageOver() {
-		if (stageScore < 20) {
-			trace("GaME OVER: " + stageScore);
-			MainEngine.currentStage = 5;
-		}
-		_sfxMap.get("song").stop();
-		_sfxMap.get("amb").stop();
+        if (stageScore < 20) {
+            trace("GaME OVER: " + stageScore);
+            MainEngine.currentStage = 5;
+        }
+        _sfxMap.get("song").stop();
+        _sfxMap.get("amb").stop();
         MainEngine.nextStage();
     }
 
@@ -347,7 +347,7 @@ class MainScene extends Scene{
             _pausedMenu.visible = _paused = !_paused;
 
         if(_paused) return;
-        
+
         super.update();
 
         if(Input.mousePressed && nose.collideMouseScale()){
@@ -356,7 +356,7 @@ class MainScene extends Scene{
 
         var l_mouthRes = l_mouth.collideMouseScale();
         if(Input.mousePressed && (l_mouthRes || r_mouth.collideMouseScale())){
-	    _sfxMap.get("mouth").play();
+            _sfxMap.get("mouth").play();
 
             var sideStatus = 0;
             var sideEntity = (l_mouthRes ? l_mouth : r_mouth);
@@ -368,7 +368,7 @@ class MainScene extends Scene{
                         _mouthCenter.updateGraphic(1);
                     else if(_mouthCenter.index == 3)
                         _mouthCenter.updateGraphic(0);
-                    
+
                 }
                 else {
                     if(_mouthCenter.index == 1)
@@ -392,10 +392,10 @@ class MainScene extends Scene{
         }
 
         if(Input.mousePressed && (r_eye.collideMouseScale()|| l_eye.collideMouseScale()))
-	    _sfxMap.get("eye").play();
+            _sfxMap.get("eye").play();
 
         if(Input.mousePressed && (r_eyebrow.collideMouseScale()|| l_eyebrow.collideMouseScale()))
-	    _sfxMap.get("eyebrow").play();
+            _sfxMap.get("eyebrow").play();
     }
 
     override public function end(){
@@ -412,44 +412,44 @@ class MainScene extends Scene{
         r_mouth = null;
         _mouthCenter = null;
     }
-	
-	private function findFacePartExpression(slot:String, part1:String, part2:String):Expression
-	{
-		var result:Expression = new Expression();
-		for (fps in MainEngine.facepartsScoreRaw) {
-			if (fps.slot == slot) {
-				if (part2 == "") {
-					if (fps.part1 == part1) {
-						return extractExpressionFromObj(fps);
-					}
-				}
-				else if ((fps.part1 == part1 && fps.part2 == part2) ||
-					(fps.part1 == part2 && fps.part2 == part1)) {
-						return extractExpressionFromObj(fps);
-				}
-			}
-		}
-		return result;
-	}
-	
-	private function extractExpressionFromObj(obj:Dynamic) {
-		var e = new Expression();
-		e.swag = obj.swag;
-		e.joy = obj.joy;
-		e.sadness = obj.sadness;
-		e.anger = obj.anger;
-		e.excitement = obj.excitement;
-		e.surprise = obj.surprise;
-		e.disgust = obj.disgust;
-		return e;
-	}
-	
-	private function endReply():Void {
-		addTween(new Tween(3, TweenType.OneShot, prepareLevel)).start();
-	}
-	private function prepareLevel(obj:Dynamic):Void {
-		_baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);	
-		_sfxMap.get("click").play();
-		date.startTalking();
-	}
+
+    private function findFacePartExpression(slot:String, part1:String, part2:String):Expression
+    {
+        var result:Expression = new Expression();
+        for (fps in MainEngine.facepartsScoreRaw) {
+            if (fps.slot == slot) {
+                if (part2 == "") {
+                    if (fps.part1 == part1) {
+                        return extractExpressionFromObj(fps);
+                    }
+                }
+                else if ((fps.part1 == part1 && fps.part2 == part2) ||
+                        (fps.part1 == part2 && fps.part2 == part1)) {
+                    return extractExpressionFromObj(fps);
+                }
+            }
+        }
+        return result;
+    }
+
+    private function extractExpressionFromObj(obj:Dynamic) {
+        var e = new Expression();
+        e.swag = obj.swag;
+        e.joy = obj.joy;
+        e.sadness = obj.sadness;
+        e.anger = obj.anger;
+        e.excitement = obj.excitement;
+        e.surprise = obj.surprise;
+        e.disgust = obj.disgust;
+        return e;
+    }
+
+    private function endReply():Void {
+        addTween(new Tween(3, TweenType.OneShot, prepareLevel)).start();
+    }
+    private function prepareLevel(obj:Dynamic):Void {
+        _baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);	
+        _sfxMap.get("click").play();
+        date.startTalking();
+    }
 }

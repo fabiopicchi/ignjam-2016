@@ -6,6 +6,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.Tween;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Graphiclist;
 
 class TalkBaloon extends Entity{
     private var _running:Bool;
@@ -16,6 +17,7 @@ class TalkBaloon extends Entity{
     private var _letterTiming:Float = 0.05;
     private var _callback:Void->Void;
     private var baloon:Image;
+    private var _currentEmoji:String;
 
     public function new (){
         super(); 
@@ -40,7 +42,20 @@ class TalkBaloon extends Entity{
         _text.y = baloon.height / 2 - _text.textHeight / 2 - 45;
         _text.text = "";
         _callback = callback;
-        addLetterTween();
+        if(_currentEmoji != null) 
+            cast(graphic, Graphiclist).removeAt(cast(graphic, Graphiclist).count - 1);
+        _currentEmoji = emoji;
+
+        if(text.length > 0){
+            addLetterTween();
+        } else {
+            var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
+            image.x = baloon.width/2 - image.width/2;
+            image.y = baloon.height / 2 - image.height / 2 - 45;
+            addGraphic(image);
+
+            addTween(new Tween(3.0, TweenType.OneShot, letterInsert)).start();
+        }
     }
 
     private function addLetterTween() {
@@ -53,16 +68,18 @@ class TalkBaloon extends Entity{
             addLetterTween();
         } else {
             _running = false;
-			var alarm = new Sfx("audio/clock_alarm.ogg");
-			alarm.play(0.5);
+            var alarm = new Sfx("audio/clock_alarm.ogg");
+            alarm.play(0.5);
             if(_callback != null) _callback();
-            //var image = Image.createRect(10, 10, 0xFFFFFF);
-            //image.x = _text.x;
-            //image.y = _text.textHeight + 3;
-            //addGraphic(image);
+            if(_fullText.length > 0){
+                var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
+                image.x = baloon.width/2 - image.width/2;
+                image.y = _text.y + _text.textHeight + 10;
+                addGraphic(image);
+            }
         }
-		var click = new Sfx("audio/click_termometer_up.ogg");
-		click.play(0.7);
+        var click = new Sfx("audio/click_termometer_up.ogg");
+        click.play(0.7);
     }
 
     public function pause():Void{
