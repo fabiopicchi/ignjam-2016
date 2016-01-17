@@ -14,7 +14,6 @@ class MainScene extends Scene{
     private var _numLevels:Int;
     private var _currentLevel:Int;
 
-    private var _charConfig:Array<Int>;
     private var _interactiveFaceParts:Array<FacePartExpression>;
     private var _actionBar:ActionBar;
     private var _paused:Bool;
@@ -28,7 +27,6 @@ class MainScene extends Scene{
 
     public function new(charConfig:Array<Int>){
         super();
-        _charConfig = charConfig;
         _paused = false;
 
         _numLevels = NUM_LEVELS;
@@ -40,27 +38,32 @@ class MainScene extends Scene{
         _sfxMap.get("nose").push(new Sfx("audio/change_nose_01_b.wav"));
     }
 
+
+
     override public function begin(){
         var body = new Entity(966, 21);
-        var img = new Image("graphics/hair02.png");
-        img.color = 0x1e1e28;
+        var img = new Image("graphics/hair0" + MainEngine.charConfig[0] + ".png");
+        img.color = MainEngine.HAIR_COLORS[MainEngine.charConfig[1]];
         body.addGraphic(img);
         img = new Image("graphics/body.png");
-        img.color = 0xb46e32;
+        img.color = MainEngine.SKIN_COLORS[MainEngine.charConfig[2]];
         body.addGraphic(img);
         body.addGraphic(new Image("graphics/body_dress.png"));
         img = new Image("graphics/face.png");
-        img.color = 0xb46e32;
+        img.color = MainEngine.SKIN_COLORS[MainEngine.charConfig[2]];
         body.addGraphic(img);
         body.addGraphic(new Image("graphics/face_highlight.png"));
         add(body);
 
-        _mouthCenter = new FacePart({
-            x: 1212, 
-            y: 730, 
-            h_width: 0, 
-            h_height: 0
-        });
+        var date = new PlayerDate([
+            new Image("graphics/date_mouth_talk01.png"),
+            new Image("graphics/date_mouth_talk02.png"),                
+            new Image("graphics/date_mouth_talk03.png"),                
+            new Image("graphics/date_mouth_talk04.png")                
+        ], 1);
+        add(date);
+
+        _mouthCenter = new FacePart({x: 1212, y: 730, h_width: 0, h_height: 0});
         _mouthCenter.addGraphic(new Image("graphics/mouthcenterclose.png"));
         _mouthCenter.addGraphic(new Image("graphics/mouthcenteropen.png"));
         add(_mouthCenter);

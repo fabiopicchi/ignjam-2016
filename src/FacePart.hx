@@ -20,15 +20,6 @@ class FacePart extends Entity{
         setHitbox(_data.h_width, _data.h_height);
     }
 
-    override public function added(){
-        super.added();
-        
-        var e = new Entity(x, y);
-        e.addGraphic(Image.createPolygon(Polygon.createFromArray([
-                        0, 0, width, 0, width, height, 0, height]), 0xFF0000, 1, false));
-        HXP.scene.add(e);
-    }
-
     override public function addGraphic(graphic:Graphic):Graphic{
         var image = cast(graphic, Image);
 
@@ -70,8 +61,5 @@ class FacePart extends Entity{
 
         if(Input.mousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
             updateGraphic(cycleValue(_graphicIndex + 1, 0, _graphiclist.count - 1));
-
-//        if(Input.rightMousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
-//            updateGraphic(cycleValue(_graphicIndex - 1, 0, _graphiclist.count - 1));
     }
 }
