@@ -20,7 +20,7 @@ class MainScene extends Scene{
     private var _pausedMenu:Entity;
 
     private var _answers:Array<Array<Expression>>;
-    private var _sfxMap:StringMap<Array<Sfx>> = new StringMap<Array<Sfx>>();
+    private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
 
     // Entities
     private var _mouthCenter:FacePart;
@@ -33,9 +33,24 @@ class MainScene extends Scene{
         _answers = new Array<Array<Expression>>();
         _interactiveFaceParts = new Array<FacePartExpression>();
 
-        _sfxMap.set("nose", new Array<Sfx>());
-        _sfxMap.get("nose").push(new Sfx("audio/change_nose_01_a.wav"));
-        _sfxMap.get("nose").push(new Sfx("audio/change_nose_01_b.wav"));
+        _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
+		
+		switch (MainEngine.currentLevel) 
+		{
+			case 1: {
+				_sfxMap.set("song", new Sfx("audio/song_coffeeshop.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_coffeeshop.ogg"));
+			}
+				
+			case 2: {
+				_sfxMap.set("song", new Sfx("audio/song_bar.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_bar.ogg"));
+			}
+			case 3: {
+				_sfxMap.set("song", new Sfx("audio/song_night.ogg"));
+				_sfxMap.set("amb", new Sfx("audio/amb_night.ogg"));
+			}
+		}
     }
 
 
@@ -77,6 +92,9 @@ class MainScene extends Scene{
         _pausedMenu.graphic = Image.createRect(HXP.width, HXP.height, 0x000000, 0.4);
         _pausedMenu.visible = _paused;
         add(_pausedMenu);
+		
+		_sfxMap.get("song").loop();
+		_sfxMap.get("amb").loop();
     }
 
     private function levelOver(){
@@ -106,8 +124,7 @@ class MainScene extends Scene{
 
         var colResult = collidePoint("nose", Input.mouseX, Input.mouseY);
         if(Input.mousePressed && colResult != null){
-            var arSfx = _sfxMap.get("nose");
-            arSfx[Math.floor(Math.random() * arSfx.length)].play();
+            _sfxMap.get("nose").play();
         }
 
         colResult = collidePoint("l_mouth", Input.mouseX, Input.mouseY);

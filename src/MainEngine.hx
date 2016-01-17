@@ -11,6 +11,8 @@ class MainEngine extends Engine
     public static var faceparts:StringMap<FacePartExpression>;
     public static var questions:Dynamic;
     public static var people:Dynamic;
+	
+	public static var currentLevel:Int = 1;
 
     public static var SKIN_COLORS:Array<Int> = [
         0xFFd282, 0xe68650, 0xb46e32, 0x965028
@@ -63,8 +65,8 @@ class MainEngine extends Engine
 
         charConfig = [
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
-            Math.floor(Math.random() * SKIN_COLORS.length), 
-            Math.floor(Math.random() * HAIR_COLORS.length)
+            Math.floor(Math.random() * HAIR_COLORS.length), 
+			Math.floor(Math.random() * SKIN_COLORS.length)
         ];
 
         currentDate = [
