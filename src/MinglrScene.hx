@@ -97,7 +97,7 @@ class MinglrScene extends Scene
 		
 		if (MainEngine.firstTime) {
 			tutActive = 1;
-			MainEngine.firstTime = false;
+			//MainEngine.firstTime = false;
 			
 			tut = new Entity();
 			tut.addGraphic(Image.createRect(Math.floor(HXP.width / HXP.engine.scaleX), 
@@ -345,7 +345,7 @@ class MinglrScene extends Scene
 
         if(Input.mousePressed){
             if(!matchFlag){
-                if(btno.collidePoint(btno.x * HXP.engine.scaleX,
+                if(tutActive == 0 && btno.collidePoint(btno.x * HXP.engine.scaleX,
                             btno.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
                     btn_no.play();
                     createMinglr();
@@ -355,7 +355,7 @@ class MinglrScene extends Scene
                     btn_yes.play();
                     itsAMatch();
                 }
-            } else if(gotoDate.collidePoint(gotoDate.x * HXP.engine.scaleX,
+            } else if(tutActive == 0 && gotoDate.collidePoint(gotoDate.x * HXP.engine.scaleX,
                         gotoDate.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
                 btn_yes.play();
                 song.stop();		

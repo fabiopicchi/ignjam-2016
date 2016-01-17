@@ -149,11 +149,12 @@ class MainScene extends Scene{
         _mouthCenter.addGraphic(new Image("graphics/mouthcenterclosetoopen.png"));
         _mouthCenter.addGraphic(new Image("graphics/mouthcenteropen.png"));
         _mouthCenter.addGraphic(new Image("graphics/mouthcenteropentoclosed.png"));
-        _mouthCenter.updateGraphic(2);
+        _mouthCenter.updateGraphic(0);
         add(_mouthCenter);
 
         for(f in MainEngine.faceparts){
             add(f);
+            f.updateGraphic(0);
             switch(f.type){
                 case "l_eyebrow":
                     l_eyebrow = f;
