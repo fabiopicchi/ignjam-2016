@@ -34,6 +34,10 @@ class MainScene extends Scene{
         _interactiveFaceParts = new Array<FacePartExpression>();
 
         _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
+		_sfxMap.set("mouth", new Sfx("audio/change_mouth.ogg"));
+		_sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
+		_sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
+		_sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
 		
 		switch (MainEngine.currentLevel) 
 		{
@@ -94,8 +98,10 @@ class MainScene extends Scene{
         add(_pausedMenu);
 		
 		_sfxMap.get("song").loop();
-		_sfxMap.get("amb").loop();
-    }
+		_sfxMap.get("amb").loop();    
+		// trocar para quando dispara uma nova question
+		_sfxMap.get("clock_tic_tac").loop();
+	}
 
     private function levelOver(){
         var arExpressions = new Array<Expression>();
@@ -130,6 +136,33 @@ class MainScene extends Scene{
         colResult = collidePoint("l_mouth", Input.mouseX, Input.mouseY);
         if(Input.mousePressed && colResult != null){
            _mouthCenter.updateGraphic(Math.floor(cast(colResult, FacePart).index / 2));
+		   _sfxMap.get("mouth").play();
+        }
+		
+		colResult = collidePoint("r_mouth", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+           _mouthCenter.updateGraphic(Math.floor(cast(colResult, FacePart).index / 2));
+		   _sfxMap.get("mouth").play();
+        }
+		
+		colResult = collidePoint("l_eye", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+		   _sfxMap.get("eye").play();
+        }
+		
+		colResult = collidePoint("r_eye", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+		   _sfxMap.get("eye").play();
+        }
+		
+		colResult = collidePoint("l_eyebrow", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+		   _sfxMap.get("eyebrow").play();
+        }
+		
+		colResult = collidePoint("r_eyebrow", Input.mouseX, Input.mouseY);
+        if(Input.mousePressed && colResult != null){
+		   _sfxMap.get("eyebrow").play();
         }
     }
 

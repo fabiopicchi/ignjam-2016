@@ -1,6 +1,7 @@
 import com.haxepunk.Engine;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.tweens.sound.SfxFader;
 import haxe.Json;
 import haxe.ds.StringMap;
 import openfl.Assets;
@@ -24,6 +25,8 @@ class MainEngine extends Engine
 
     public static var charConfig:Array<Int>;
     public static var currentDate:Array<Int>;
+	
+	public static var songFader:SfxFader;
 
     override public function init()
     {
@@ -72,6 +75,8 @@ class MainEngine extends Engine
         currentDate = [
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
         ];
+		
+		songFader = null;
     }
 
     public static function main() { Lib.current.addChild(new MainEngine()); }
