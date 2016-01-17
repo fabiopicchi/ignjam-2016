@@ -105,8 +105,8 @@ class MinglrScene extends Scene
         MainEngine.currentDate[2] = Math.floor(Math.random() * MainEngine.HAIR_COLORS.length);
         MainEngine.currentDate[3] = Math.floor(Math.random() * MainEngine.SKIN_COLORS.length);
 
-        var skinColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
-        var hairColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
+        var hairColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
+        var skinColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
  
         var img = new Image("graphics/hair0" + MainEngine.currentDate[1] + ".png");
         img.color = hairColor;
