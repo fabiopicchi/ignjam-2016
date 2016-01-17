@@ -49,7 +49,14 @@ class TalkBaloon extends Entity{
         if(text.length > 0){
             addLetterTween();
         } else {
-            var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
+            var image:Image;
+			if (_fullText.length > 0) {
+				image = new Image("graphics/emojis/" + _currentEmoji + ".png");
+			}
+			else {
+				image = new Image("graphics/emojis/" + _currentEmoji + "_big.png");
+			}
+			
             image.x = baloon.width/2 - image.width/2;
             image.y = baloon.height / 2 - image.height / 2 - 45;
             addGraphic(image);
