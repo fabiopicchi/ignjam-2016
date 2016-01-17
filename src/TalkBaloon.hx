@@ -1,35 +1,49 @@
 import openfl.Assets;
+import openfl.text.TextFormatAlign;
 import com.haxepunk.utils.Input;
 import com.haxepunk.Entity;
 import com.haxepunk.Tween;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.Image;
-import haxe.Utf8;
 
-class AnimatedText extends Entity{
+class TalkBaloon extends Entity{
     private var _running:Bool;
     private var _text:Text;
     private var _currentTextIndex:Int;
     private var _fullText:String;
     private var _letterTime:Float = 0;
     private var _letterTiming:Float = 0.05;
+    private var _callback:Void->Void;
+    private var baloon:Image;
 
-    public function new (x:Int, y:Int, text:String){
-        super(x, y); 
+    public function new (){
+        super(); 
 
-        var textFormat = {font : "font/OpenSans-Regular.ttf", 
-                    wordWrap : true};
+        var textFormat = {
+            font : "font/Dion.otf", 
+            size : 80,
+            color : 0x000000,
+            align: TextFormatAlign.CENTER,
+            wordWrap : true};
 
-        _text = new Text("", 0, 0, 400, 0, textFormat);
+        addGraphic(baloon = new Image("graphics/balao.png"));
+
+        _text = new Text("", 70, 107, 724, 0, textFormat);
+        addGraphic(_text);
+    }
+
+    public function animateTalk(text:String, callback:Void -> Void) {
         _fullText = text;
         _currentTextIndex = 0;
         _running = true;
-        graphic = _text;
-        
+        _text.text = _fullText;
+        _text.y = baloon.height / 2 - _text.textHeight / 2 - 45;
+        _text.text = "";
+        _callback = callback;
         addLetterTween();
     }
 
-    private inline function addLetterTween() {
+    private function addLetterTween() {
         addTween(new Tween(_letterTiming, TweenType.OneShot, letterInsert)).start();
     }
 
@@ -39,10 +53,11 @@ class AnimatedText extends Entity{
             addLetterTween();
         } else {
             _running = false;
-            var image = Image.createRect(10, 10, 0xFFFFFF);
-            image.x = 3;
-            image.y = _text.textHeight + 3;
-            addGraphic(image);
+            if(_callback != null) _callback();
+            //var image = Image.createRect(10, 10, 0xFFFFFF);
+            //image.x = _text.x;
+            //image.y = _text.textHeight + 3;
+            //addGraphic(image);
         }
     }
 

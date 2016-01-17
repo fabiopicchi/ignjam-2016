@@ -17,7 +17,8 @@ class FacePart extends Entity{
     public function new(data:Dynamic){
         _data = data;
         super(_data.h_x, _data.h_y, _graphiclist); 
-        setHitbox(_data.h_width, _data.h_height);
+        setHitbox(Math.floor(_data.h_width * HXP.engine.scaleX),
+                Math.floor(_data.h_height * HXP.engine.scaleY));
     }
 
     override public function addGraphic(graphic:Graphic):Graphic{
@@ -59,7 +60,11 @@ class FacePart extends Entity{
     override public function update():Void{
         super.update();
 
-        if(Input.mousePressed && collidePoint(x, y, Input.mouseX, Input.mouseY))
+        if(Input.mousePressed && collideMouseScale())
             updateGraphic(cycleValue(_graphicIndex + 1, 0, _graphiclist.count - 1));
+    }
+
+    public function collideMouseScale():Bool{
+        return collidePoint(x * HXP.engine.scaleX, y * HXP.engine.scaleX, Input.mouseX, Input.mouseY);
     }
 }

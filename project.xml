@@ -6,7 +6,7 @@
  	<app file="ignjam2016" main="MainEngine" path="bin" />
 
 	<window fps="60" background="0xFFFFFF" />
-	<window width="1200" height="750" fullscreen="true" />
+	<window width="1200" height="750" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
 
 	<source path="src" />
@@ -19,7 +19,7 @@
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
 	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
-	<assets path="assets/font" rename="font" include="*.ttf" />
+	<assets path="assets/font" rename="font" include="*.ttf|*.otf" />
 	<assets path="assets/" rename="assets" />
 
 	<icon path="assets/HaxePunk.svg" />

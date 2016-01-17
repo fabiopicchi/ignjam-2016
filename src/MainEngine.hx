@@ -9,8 +9,8 @@ import openfl.Lib;
 class MainEngine extends Engine
 {
     public static var faceparts:StringMap<FacePartExpression>;
-    public static var questions:Dynamic;
-    public static var people:Dynamic;
+    public static var questions:Array<Dynamic>;
+    public static var people:Array<Dynamic>;
 
     public static var SKIN_COLORS:Array<Int> = [
         0xFFd282, 0xe68650, 0xb46e32, 0x965028
@@ -22,6 +22,7 @@ class MainEngine extends Engine
 
     public static var charConfig:Array<Int>;
     public static var currentDate:Array<Int>;
+    public static var currentStage:Int = 0;
 
     override public function init()
     {
@@ -29,6 +30,8 @@ class MainEngine extends Engine
         HXP.console.enable();
 #end
         HXP.scene = new MenuScene();
+
+        scaleX = scaleY = 0.625;
 
         var data = Json.parse(Assets.getText("assets/faceparts.json"));
         var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
@@ -62,15 +65,28 @@ class MainEngine extends Engine
         people = Json.parse(Assets.getText("assets/people.json"));
 
         charConfig = [
+            Math.floor(Math.random() * 2), 
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
-            Math.floor(Math.random() * SKIN_COLORS.length), 
-            Math.floor(Math.random() * HAIR_COLORS.length)
+            Math.floor(Math.random() * HAIR_COLORS.length),
+            Math.floor(Math.random() * SKIN_COLORS.length)
         ];
 
         currentDate = [
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
+            Math.floor(Math.random() * people.length)
         ];
     }
 
     public static function main() { Lib.current.addChild(new MainEngine()); }
+
+    public static function nextStage() {
+        if(currentStage < 2)
+        {
+            currentStage++;
+            HXP.scene = new MainScene();
+        } else {
+            currentStage = 0;
+            HXP.scene = new MenuScene();
+        }
+    }
 }
