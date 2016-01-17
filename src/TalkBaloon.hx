@@ -1,3 +1,4 @@
+import com.haxepunk.Sfx;
 import openfl.Assets;
 import openfl.text.TextFormatAlign;
 import com.haxepunk.utils.Input;
@@ -31,7 +32,7 @@ class TalkBaloon extends Entity{
         addGraphic(_text);
     }
 
-    public function animateTalk(text:String, callback:Void -> Void) {
+    public function animateTalk(text:String, emoji:String, callback:Void -> Void) {
         _fullText = text;
         _currentTextIndex = 0;
         _running = true;
@@ -52,12 +53,16 @@ class TalkBaloon extends Entity{
             addLetterTween();
         } else {
             _running = false;
+			var alarm = new Sfx("audio/clock_alarm.ogg");
+			alarm.play(0.5);
             if(_callback != null) _callback();
             //var image = Image.createRect(10, 10, 0xFFFFFF);
             //image.x = _text.x;
             //image.y = _text.textHeight + 3;
             //addGraphic(image);
         }
+		var click = new Sfx("audio/click_termometer_up.ogg");
+		click.play(0.7);
     }
 
     public function pause():Void{

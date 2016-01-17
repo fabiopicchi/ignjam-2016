@@ -57,7 +57,6 @@ class MainEngine extends Engine
 				fp.type = key;
                 faceparts.set(key, fp);
             }
-
 			// score
             faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }

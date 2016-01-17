@@ -3,6 +3,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.Sfx;
+import com.haxepunk.Tween;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
 import com.haxepunk.graphics.Image;
@@ -22,6 +23,8 @@ class MainScene extends Scene{
 
     private var _answers:Array<Array<String>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
+	
+	private var arQuestionEmoji:Array<String>;
 	
 	// Score
 	private var stageScore:Float;
@@ -58,6 +61,7 @@ class MainScene extends Scene{
 		_sfxMap.set("mouth", new Sfx("audio/change_mouth.ogg"));
 		_sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
 		_sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
+		_sfxMap.set("click", new Sfx("audio/click_termometer_up.ogg"));
 		_sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
 		_sfxMap.set("clock_alarm", new Sfx("audio/clock_alarm.ogg"));
 		
@@ -80,9 +84,10 @@ class MainScene extends Scene{
     }
 
     override public function begin(){
-        
+		
 		var index = -1;
         var arIndexes = [];
+		arQuestionEmoji = [];
 		trace(MainEngine.currentStage);
         for(i in 0...(_numLevels)){
             do {               
@@ -92,7 +97,21 @@ class MainScene extends Scene{
 					 MainEngine.questions[index].level != MainEngine.currentStage);
             arIndexes.push(index);
             _questions.push(MainEngine.questions[index]);
+			// emojis para questoes
+			var qExp = extractExpressionFromObj(MainEngine.questions[index]);
+			var maxValue = 0.0;
+			var maxField = "swag";
+			for (field in Reflect.fields(qExp)) {
+				var value = Math.abs(Reflect.field(qExp, field));
+				if (value > maxValue) {
+					maxValue = value;
+					maxField = field;
+				}			
+			}
+			var personality = MainEngine.currentPerson;
+			arQuestionEmoji.push(Reflect.field(personality, "e_" + maxField));
         }
+		trace(arQuestionEmoji);
         trace(arIndexes);
 
         var bg = new Entity();
@@ -179,9 +198,10 @@ class MainScene extends Scene{
         _pausedMenu.visible = _paused;
         add(_pausedMenu);
         _sfxMap.get("song").loop();
-        _sfxMap.get("amb").loop();    
+        _sfxMap.get("amb").loop();
 
-        _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
+        _baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);
+		_sfxMap.get("click").play();
         date.startTalking();
 		stageScore = 0;
     }
@@ -246,7 +266,7 @@ class MainScene extends Scene{
 			v += Reflect.field(mouthScore, field);
 			var pT = Reflect.field(personality, field);
 			Reflect.setField(expressionScores, field, v * pT);
-			attractionAggregate += v * pT;
+			attractionAggregate += v * pT;			
 		}
 		trace("attraction raw: " + attractionAggregate);
 		// calcula variacao
@@ -261,17 +281,48 @@ class MainScene extends Scene{
 		}
 		trace("repetition: " + repetition);
 		// aplicar punicao por repeticao
+		var replicaRepeticao:Array<String> = null;
 		if(repetition >= 4) {
-			attractionAggregate -= Math.pow( repetition-3, 2);
+			attractionAggregate -= Math.pow( repetition - 3, 2) * 10;
+			replicaRepeticao = [ "Você está prestando atenção?",
+				"Hm... Você não está ouvindo, né?",
+				"Eu estou te incomodando com a minha conversa?" ];
 		}
 		trace("attraction final: " + attractionAggregate);
 		stageScore += attractionAggregate;
+		stageScore = HXP.clamp(stageScore, -200, 200);
 		trace("score: " + stageScore);
 		
+		// calular emoji
+		var emojiScore = "neutral";
+		if (attractionAggregate < -30) {
+			emojiScore = "why";
+		}
+		else if (attractionAggregate < -10) {
+			emojiScore = "badeyes";
+		}
+		else if (attractionAggregate < 10) {
+			emojiScore = "neutral";
+		}
+		else if (attractionAggregate < 30) {
+			emojiScore = "smile";
+		}
+		else {
+			emojiScore = "broadsmile";
+		}
+		
 		// é final de fase?
-        if(_answers.length < _numLevels){
-            _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
-            date.startTalking();
+        if (_answers.length < _numLevels) {
+			if (replicaRepeticao != null) {
+				var i = Math.floor(3 * Math.random());
+				_baloon.animateTalk(replicaRepeticao[i], emojiScore, endReply);	
+				_sfxMap.get("click").play();
+			}
+			else {
+				_baloon.animateTalk("", emojiScore,  endReply);
+				_sfxMap.get("click").play();
+			}
+            // date.startTalking();
             _turnCounter.updateCounter();
         }
         else {
@@ -284,6 +335,8 @@ class MainScene extends Scene{
 			trace("GaME OVER: " + stageScore);
 			MainEngine.currentStage = 5;
 		}
+		_sfxMap.get("song").stop();
+		_sfxMap.get("amb").stop();
         MainEngine.nextStage();
     }
 
@@ -391,5 +444,14 @@ class MainScene extends Scene{
 		e.surprise = obj.surprise;
 		e.disgust = obj.disgust;
 		return e;
+	}
+	
+	private function endReply():Void {
+		addTween(new Tween(3, TweenType.OneShot, prepareLevel)).start();
+	}
+	private function prepareLevel(obj:Dynamic):Void {
+		_baloon.animateTalk(_questions[_currentLevel].text, arQuestionEmoji[_currentLevel], startLevel);	
+		_sfxMap.get("click").play();
+		date.startTalking();
 	}
 }
