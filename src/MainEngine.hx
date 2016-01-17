@@ -15,6 +15,7 @@ class MainEngine extends Engine
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
     public static var mindlrProfiles:Array<Dynamic>;
+    public static var squickrs:Dynamic;
 
     public static var currentStage:Int = 1;
 
@@ -37,7 +38,7 @@ class MainEngine extends Engine
 #if debug
         HXP.console.enable();
 #end
-        HXP.scene = new MinglrScene();
+        HXP.scene = new SquickrScene(false, 0.0);
 
         scaleX = scaleY = 0.625;
 
@@ -65,6 +66,7 @@ class MainEngine extends Engine
         questions = Json.parse(Assets.getText("assets/questions.json"));
         people = Json.parse(Assets.getText("assets/people.json"));
         mindlrProfiles = Json.parse(Assets.getText("assets/mindlr-profiles.json"));
+        squickrs = Json.parse(Assets.getText("assets/squickrs.json"));
 
         charConfig = [
             Math.floor(Math.random() * 2), 
@@ -74,12 +76,16 @@ class MainEngine extends Engine
         ];
 
         currentDate = [
+            Math.floor(Math.random() * 2), 
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
-            Math.floor(Math.random() * people.length)
+            Math.floor(Math.random() * HAIR_COLORS.length),
+            Math.floor(Math.random() * SKIN_COLORS.length),
+            Math.floor(Math.random() * people.length),
+            Math.floor(Math.random() * mindlrProfiles.length)
         ];
 
         // isso daqui vai virar o resultado do minglr 
-        currentPerson = people[currentDate[1]];
+        currentPerson = people[currentDate[4]];
 
         songFader = null;
     }

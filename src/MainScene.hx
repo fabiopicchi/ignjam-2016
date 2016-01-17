@@ -117,7 +117,7 @@ class MainScene extends Scene{
         body.addGraphic(new Image("graphics/face_highlight.png"));
         add(body);
 
-        date = new PlayerDate(MainEngine.currentDate[0]);
+        date = new PlayerDate(MainEngine.currentDate[1]);
         add(date);
 
         _mouthCenter = new FacePart({x: 1212, y: 730, h_width: 0, h_height: 0});

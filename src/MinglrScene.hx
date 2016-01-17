@@ -79,15 +79,19 @@ class MinglrScene extends Scene
 
         body = new Entity(786, 390);
         var scale = 0.3;
-        var skinColor = MainEngine.SKIN_COLORS[Math.floor(Math.random() * MainEngine.SKIN_COLORS.length)];
-        var hairColor = MainEngine.HAIR_COLORS[Math.floor(Math.random() * MainEngine.HAIR_COLORS.length)];
 
-        MainEngine.currentDate[0] = (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1);
-
-        profile = MainEngine.mindlrProfiles[Math.floor(
+        profile = MainEngine.mindlrProfiles[MainEngine.currentDate[5] = Math.floor(
                 Math.random() * MainEngine.mindlrProfiles.length)];
-        
-        var img = new Image("graphics/hair0" + MainEngine.currentDate[0] + ".png");
+
+        MainEngine.currentDate[0] = profile.Gender != "male" ? 0 : 1;
+        MainEngine.currentDate[1] = (Math.floor(Math.random() * MainEngine.HAIR_STYLES) + 1);
+        MainEngine.currentDate[2] = Math.floor(Math.random() * MainEngine.HAIR_COLORS.length);
+        MainEngine.currentDate[3] = Math.floor(Math.random() * MainEngine.SKIN_COLORS.length);
+
+        var skinColor = MainEngine.HAIR_COLORS[MainEngine.currentDate[2]];
+        var hairColor = MainEngine.SKIN_COLORS[MainEngine.currentDate[3]];
+ 
+        var img = new Image("graphics/hair0" + MainEngine.currentDate[1] + ".png");
         img.color = hairColor;
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
@@ -95,7 +99,8 @@ class MinglrScene extends Scene
         img.color = skinColor;
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
-        img = profile.Gender != "male" ? new Image("graphics/body_dress.png") :
+
+        img = MainEngine.currentDate[0] == 0 ? new Image("graphics/body_dress.png") :
                 new Image("graphics/body_suit.png");
         img.scaleX = img.scaleY = scale;
         body.addGraphic(img);
@@ -138,6 +143,8 @@ class MinglrScene extends Scene
         add(body);
 
         text.text = profile.Name + "\n" + "PLACEHOLDER";
+
+
     }
 
     private function itsAMatch(){
@@ -240,12 +247,6 @@ class MinglrScene extends Scene
         var text_1 = new Text("Eu!", 644, 710, 283, 0, textFormat);
         matchFront.addGraphic(text_1);
 
-        var textFormat = {
-            font : "font/Dion.otf", 
-            size : 64,
-            color : 0xFFFFFF,
-            align: TextFormatAlign.CENTER,
-            wordWrap : true};
         var text_2 = new Text(profile.Name, 1007, 710, 283, 0, textFormat);
         matchFront.addGraphic(text_2);
 
