@@ -38,7 +38,7 @@ class MainEngine extends Engine
 #if debug
         HXP.console.enable();
 #end
-        HXP.scene = new SquickrScene(false, 0.0);
+        HXP.scene = new MinglrScene();
 
         scaleX = scaleY = 0.625;
 
@@ -58,8 +58,7 @@ class MainEngine extends Engine
                 fp.type = key;
                 faceparts.set(key, fp);
             }
-
-            // score
+	    // score
             faceparts.get(key).addNamedGraphic(f.name, new Image("graphics/" + f.name + ".png"));
         }
 
