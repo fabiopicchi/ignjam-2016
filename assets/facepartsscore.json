@@ -1,0 +1,13 @@
+[{"slot":"eyebrow","part1":"normal","part2":"normal","swag":-5,"joy":5,"sadness":-5,"anger":-10,"excitement":5,"surprise":5,"disgust":-10},
+{"slot":"eyebrow","part1":"normal","part2":"angry","swag":10,"joy":0,"sadness":-5,"anger":0,"excitement":-5,"surprise":5,"disgust":5},
+{"slot":"eyebrow","part1":"normal","part2":"sad","swag":5,"joy":-5,"sadness":5,"anger":-5,"excitement":-10,"surprise":5,"disgust":5},
+{"slot":"eyebrow","part1":"angry","part2":"angry","swag":-5,"joy":-10,"sadness":-5,"anger":10,"excitement":-5,"surprise":0,"disgust":5},
+{"slot":"eyebrow","part1":"angry","part2":"sad","swag":0,"joy":0,"sadness":10,"anger":5,"excitement":-10,"surprise":5,"disgust":10},
+{"slot":"eyebrow","part1":"sad","part2":"sad","swag":-5,"joy":-10,"sadness":10,"anger":-5,"excitement":-5,"surprise":0,"disgust":10},
+{"slot":"nose","part1":"normal","part2":"","swag":0,"joy":0,"sadness":0,"anger":0,"excitement":0,"surprise":0,"disgust":-5},
+{"slot":"nose","part1":"furrowed","part2":"","swag":-5,"joy":-10,"sadness":5,"anger":10,"excitement":5,"surprise":0,"disgust":10},
+{"slot":"eye","part1":"open","part2":"open","swag":0,"joy":10,"sadness":0,"anger":0,"excitement":10,"surprise":10,"disgust":-5},
+{"slot":"eye","part1":"open","part2":"semiclosed","swag":5,"joy":0,"sadness":0,"anger":5,"excitement":-5,"surprise":5,"disgust":10},
+{"slot":"eye","part1":"open","part2":"closed","swag":10,"joy":5,"sadness":-5,"anger":-10,"excitement":-5,"surprise":0,"disgust":-5},
+{"slot":"eye","part1":"semiclosed","part2":"semiclosed","swag":10,"joy":0,"sadness":-5,"anger":5,"excitement":5,"surprise":-5,"disgust":10},
+{"slot":"eye","part1":"semiclosed","part2":"closed","swag":5,"joy":-5,"sadness":5,"anger":-5,"excitement":-5,"surprise":5,"disgust":5}]

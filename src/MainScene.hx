@@ -15,7 +15,7 @@ class MainScene extends Scene{
     private var _numLevels:Int;
     private var _currentLevel:Int = 0;
 
-    private var _interactiveFaceParts:Array<FacePartExpression>;
+    private var _interactiveFaceParts:Array<FacePart>;
     private var _actionBar:ActionBar;
     private var _paused:Bool;
     private var _pausedMenu:Entity;
@@ -27,16 +27,16 @@ class MainScene extends Scene{
 	private var stageScore:Float;
 	private var expressionScores:Expression;
 	private var variationScore:Float;
-	private var lastFaceParts:Array<FacePartExpression>;
+	private var lastFaceParts:Array<FacePart>;
 
     // Entities
-    private var l_eyebrow:FacePartExpression;
-    private var r_eyebrow:FacePartExpression;
-    private var l_eye:FacePartExpression;
-    private var r_eye:FacePartExpression;
-    private var nose:FacePartExpression;
-    private var l_mouth:FacePartExpression;
-    private var r_mouth:FacePartExpression;
+    private var l_eyebrow:FacePart;
+    private var r_eyebrow:FacePart;
+    private var l_eye:FacePart;
+    private var r_eye:FacePart;
+    private var nose:FacePart;
+    private var l_mouth:FacePart;
+    private var r_mouth:FacePart;
     private var _mouthCenter:FacePart;
     private var date:PlayerDate;
     
@@ -51,7 +51,7 @@ class MainScene extends Scene{
 
         _numLevels = NUM_LEVELS;
         _answers = new Array<Array<Expression>>();
-        _interactiveFaceParts = new Array<FacePartExpression>();
+        _interactiveFaceParts = new Array<FacePart>();
         _questions = [];
 
         _sfxMap.set("nose", new Sfx("audio/change_nose.ogg"));
@@ -141,7 +141,7 @@ class MainScene extends Scene{
                     l_eye = f;
                 case "r_eye":
                     r_eye = f;
-                case "nose":
+                case "_nose":
                     nose = f;
                 case "l_mouth":
                     l_mouth = f;
@@ -191,16 +191,12 @@ class MainScene extends Scene{
     }
 
     private function levelOver(){
-        var arExpressions = new Array<Expression>();
-
-        for(fp in _interactiveFaceParts)
-            arExpressions.push(fp.expression);
-
         _answers.push(arExpressions);
 		
 		// calcular score da expressao
 		expressionScores = new Expression();
 		for (fp in _interactiveFaceParts) {
+			/*
 			expressionScores.swag += fp.expression.swag * _questions[_currentLevel].swag * MainEngine.currentPerson.swag;
 			expressionScores.joy += fp.expression.joy * _questions[_currentLevel].joy * MainEngine.currentPerson.joy;
 			expressionScores.sadness += fp.expression.sadness * _questions[_currentLevel].sadness * MainEngine.currentPerson.sadness;
@@ -208,6 +204,7 @@ class MainScene extends Scene{
 			expressionScores.excitement += fp.expression.excitement * _questions[_currentLevel].excitement * MainEngine.currentPerson.excitement;
 			expressionScores.surprise += fp.expression.surprise * _questions[_currentLevel].surprise * MainEngine.currentPerson.surprise;
 			expressionScores.disgust += fp.expression.disgust * _questions[_currentLevel].disgust * MainEngine.currentPerson.disgust;
+			*/
 		}
 		
 		/*

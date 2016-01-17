@@ -9,7 +9,8 @@ import openfl.Lib;
 
 class MainEngine extends Engine
 {
-    public static var faceparts:StringMap<FacePartExpression>;
+    public static var faceparts:StringMap<FacePart>;
+	public static var facepartsScore:StringMap<Dynamic>;
     public static var questions:Array<Dynamic>;
     public static var people:Array<Dynamic>;
 	
@@ -37,34 +38,30 @@ class MainEngine extends Engine
         HXP.scene = new MenuScene();
 
         scaleX = scaleY = 0.625;
+		
+		var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
 
-        var data = Json.parse(Assets.getText("assets/faceparts.json"));
-        var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
+		var dataFPScore = Json.parse(Assets.getText("assets/facepartsscore.json"));
+		var arFPScore:Array<Dynamic> = cast(dataFPScore, Array<Dynamic>);
+		
+        var dataFP = Json.parse(Assets.getText("assets/faceparts.json"));		
+        var arFaceparts:Array<Dynamic> = cast(dataFP, Array<Dynamic>);
+        faceparts = new StringMap<FacePart>();
 
-        var arFaceparts:Array<Dynamic> = cast(data, Array<Dynamic>);
-
-        faceparts = new StringMap<FacePartExpression>();
-
-        for(f in arFaceparts){
-            var expression = new Expression();
-            expression.swag = f.swag;
-            expression.joy = f.joy;
-            expression.sadness = f.sadness;
-            expression.anger = f.anger;
-            expression.excitement = f.excitement;
-            expression.surprise = f.surprise;
-            expression.disgust = f.disgust;
-
-            if(!faceparts.exists(f.type)){
-                var facepartExpression = 
-                    new FacePartExpression(Reflect.field(positionData, f.type));
-                facepartExpression.type = f.type;
-                faceparts.set(f.type, facepartExpression);
+        for (f in arFaceparts) {
+			var key:String = f.side + "_" + f.slot;
+			trace("key: " + key);
+            if(!faceparts.exists(key)){
+                var fp = new FacePart(Reflect.field(positionData, key));
+				fp.type = key;
+                faceparts.set(key, fp);
             }
 
-            faceparts.get(f.type).addExpression(new Image("graphics/" + f.name + ".png"),
-                    expression);
+			// score
+            faceparts.get(key).addGraphic(new Image("graphics/" + f.name + ".png"));
         }
+		
+		
 
         questions = Json.parse(Assets.getText("assets/questions.json"));
         people = Json.parse(Assets.getText("assets/people.json"));
