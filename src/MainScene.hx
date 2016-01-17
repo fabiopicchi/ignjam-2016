@@ -22,6 +22,12 @@ class MainScene extends Scene{
 
     private var _answers:Array<Array<Expression>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
+	
+	// Score
+	private var stageScore:Float;
+	private var expressionScores:Expression;
+	private var variationScore:Float;
+	private var lastFaceParts:Array<FacePartExpression>;
 
     // Entities
     private var l_eyebrow:FacePartExpression;
@@ -191,7 +197,29 @@ class MainScene extends Scene{
             arExpressions.push(fp.expression);
 
         _answers.push(arExpressions);
-
+		
+		// calcular score da expressao
+		expressionScores = new Expression();
+		for (fp in _interactiveFaceParts) {
+			expressionScores.swag += fp.expression.swag * _questions[_currentLevel].swag * MainEngine.currentPerson.swag;
+			expressionScores.joy += fp.expression.joy * _questions[_currentLevel].joy * MainEngine.currentPerson.joy;
+			expressionScores.sadness += fp.expression.sadness * _questions[_currentLevel].sadness * MainEngine.currentPerson.sadness;
+			expressionScores.anger += fp.expression.anger * _questions[_currentLevel].anger * MainEngine.currentPerson.anger;
+			expressionScores.excitement += fp.expression.excitement * _questions[_currentLevel].excitement * MainEngine.currentPerson.excitement;
+			expressionScores.surprise += fp.expression.surprise * _questions[_currentLevel].surprise * MainEngine.currentPerson.surprise;
+			expressionScores.disgust += fp.expression.disgust * _questions[_currentLevel].disgust * MainEngine.currentPerson.disgust;
+		}
+		
+		/*
+		// variacao
+		if (_currentLevel > 0) {
+			
+		}
+		*/
+		
+		
+		
+		// é final de fase?
         if(_answers.length < _numLevels){
             _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
             date.startTalking();

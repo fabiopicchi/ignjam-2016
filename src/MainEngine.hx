@@ -26,6 +26,8 @@ class MainEngine extends Engine
     public static var charConfig:Array<Int>;
     public static var currentDate:Array<Int>;
     public static var songFader:SfxFader;
+	
+	public static var currentPerson:Dynamic;
 
     override public function init()
     {
@@ -78,6 +80,9 @@ class MainEngine extends Engine
             Math.floor(Math.random() * HAIR_STYLES) + 1, 
             Math.floor(Math.random() * people.length)
         ];
+		
+		// isso daqui vai virar o resultado do minglr 
+		currentPerson = people[currentDate[1]];
 		
 		songFader = null;
     }
