@@ -9,6 +9,7 @@ import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.Text;
+import flash.display.Graphics;
 import openfl.text.TextFormatAlign;
 
 class MinglrScene extends Scene
@@ -28,6 +29,9 @@ class MinglrScene extends Scene
 	private var btn_no:Sfx;
 	private var btn_yes:Sfx;
     private var profile:Dynamic;
+	
+	private var tutActive:Int = 0;
+	private var tut:Entity;
 
     override public function begin(){
         //MainEngine.songFader = new SfxFader(_sfxSong);
@@ -36,7 +40,7 @@ class MinglrScene extends Scene
         bg.addGraphic(new Image("graphics/pregame/fundo.png"));
         bg.addGraphic(new Image("graphics/pregame/mobilebase.png"));
         add(bg);
-        
+		
         var minglrBg = new Image("graphics/pregame/minglr_bg.png");
         minglrBg.x = 351; minglrBg.y = 241;
         bg.addGraphic(minglrBg);
@@ -89,6 +93,22 @@ class MinglrScene extends Scene
 		
 		btn_no = new Sfx("audio/button_no.ogg");
 		btn_yes = new Sfx("audio/button_yes.ogg");
+		
+		
+		if (MainEngine.firstTime) {
+			tutActive = 1;
+			MainEngine.firstTime = false;
+			
+			tut = new Entity();
+			tut.addGraphic(Image.createRect(Math.floor(HXP.width / HXP.engine.scaleX), 
+                Math.floor(HXP.height / HXP.engine.scaleY), 0x000000, 0.4));
+			var img1 = new Image("graphics/_tutorial1.jpg");
+			img1.x = 100; img1.y = 100;
+			tut.addGraphic(img1);
+			tut.setHitbox(1920, 1200);
+			add(tut);	
+		}
+		
     }
 
     private function createMinglr(){
@@ -296,6 +316,24 @@ class MinglrScene extends Scene
 
     override public function update(){
         super.update();
+		
+		if (tutActive != 0) {
+			if(Input.mousePressed && tut.collidePoint(tut.x * HXP.engine.scaleX,
+					tut.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {
+				btn_yes.play();
+				tutActive++;
+				if (tutActive == 2) {
+					var img2 = new Image("graphics/_tutorial2.jpg");
+					img2.x = 100; img2.y = 100;
+					tut.addGraphic(img2);
+				}
+				else {
+					remove(tut);
+					tutActive = 0;
+				}
+			}
+		}
+		
 		
 		if(Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX,
                     _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)) {

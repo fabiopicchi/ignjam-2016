@@ -32,6 +32,8 @@ class MainEngine extends Engine
     public static var songFader:SfxFader;
 
     public static var currentPerson:Dynamic;
+	
+	public static var firstTime:Bool = true;
 
     override public function init()
     {
@@ -39,7 +41,8 @@ class MainEngine extends Engine
         HXP.console.enable();
 #end
         HXP.scene = new MinglrScene();
-
+		//HXP.scene = new TutorialScene();
+		
         scaleX = scaleY = 0.625;
 
         var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
