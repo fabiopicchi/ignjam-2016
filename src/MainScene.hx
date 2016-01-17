@@ -20,7 +20,7 @@ class MainScene extends Scene{
     private var _paused:Bool;
     private var _pausedMenu:Entity;
 
-    private var _answers:Array<Array<Expression>>;
+    private var _answers:Array<Array<String>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
 	
 	// Score
@@ -50,7 +50,7 @@ class MainScene extends Scene{
         _paused = false;
 
         _numLevels = NUM_LEVELS;
-        _answers = new Array<Array<Expression>>();
+        _answers = new Array<Array<String>>();
         _interactiveFaceParts = new StringMap<FacePart>();
         _questions = [];
 
@@ -59,6 +59,7 @@ class MainScene extends Scene{
 		_sfxMap.set("eye", new Sfx("audio/change_eye.ogg"));
 		_sfxMap.set("eyebrow", new Sfx("audio/change_eyebrow.ogg"));
 		_sfxMap.set("clock_tic_tac", new Sfx("audio/clock_tic_tac.ogg"));
+		_sfxMap.set("clock_alarm", new Sfx("audio/clock_alarm.ogg"));
 		
 		switch(MainEngine.currentStage) 
 		{
@@ -181,6 +182,7 @@ class MainScene extends Scene{
 
         _baloon.animateTalk(_questions[_currentLevel].text, startLevel);
         date.startTalking();
+		stageScore = 0;
     }
 
     private function startLevel(){
@@ -191,12 +193,16 @@ class MainScene extends Scene{
     }
 
     private function levelOver() {
+        // sfx
+		_sfxMap.get("clock_tic_tac").stop();
+		_sfxMap.get("clock_alarm").play();
 		
-        //_answers.push(0);
-		
+		// calculo de score e armazenamento de caras anteriores
+		var answer = new Array<String>();
 		var arCurrentFPData = new StringMap<Dynamic>();
 		for (ifp in _interactiveFaceParts) {
 			var id = ifp.getPartName();
+			answer.push(id);
 			// busca todos os dados no json
 			for (fpdata in MainEngine.facepartsRaw) {
 				if (fpdata.name == ifp.getPartName()) {
@@ -204,9 +210,7 @@ class MainScene extends Scene{
 				}
 			}
 		}
-		
-		// eyebrow score
-		var nL_eyebrow = _interactiveFaceParts.get("l_eyebrow").getPartName();
+		_answers.push(answer);
 		
 		var eyebrowScore = findFacePartExpression(
 			"eyebrow",
@@ -227,39 +231,41 @@ class MainScene extends Scene{
 			"mouth",
 			arCurrentFPData.get("l_mouth").state,
 			arCurrentFPData.get("r_mouth").state);
-			
-		// calcular score da expressao
-		expressionScores = new Expression();
 		
-		/*
-		for (ifp in _interactiveFaceParts) {
-			var id = ifp.getPartName();
-			for (fpdata in MainEngine.facepartsRaw) {
-				if (fpdata.name == id) {
-					
+		// calcular score da expressao
+		trace("----------------- ROUND " + _answers.length);
+		var personality = extractExpressionFromObj(MainEngine.currentPerson);
+		expressionScores = new Expression();
+		var attractionAggregate:Float = 0;
+		for (field in Reflect.fields(expressionScores)) {
+			var v = 0;
+			v += Reflect.field(eyebrowScore, field);
+			v += Reflect.field(eyeScore, field);
+			v += Reflect.field(noseScore, field);
+			v += Reflect.field(mouthScore, field);
+			var pT = Reflect.field(personality, field);
+			Reflect.setField(expressionScores, field, v * pT);
+			attractionAggregate += v * pT;
+		}
+		trace("attraction raw: " + attractionAggregate);
+		// calcula variacao
+		var repetition:Int = 0;
+		if (_answers.length > 1) {
+			for (i in 0..._answers[_answers.length - 2].length)
+			{
+				if (_answers[_answers.length - 2][i] == answer[i]) {
+					repetition++;
 				}
 			}
-			
-			
-			/*
-			expressionScores.swag += fp.expression.swag * _questions[_currentLevel].swag * MainEngine.currentPerson.swag;
-			expressionScores.joy += fp.expression.joy * _questions[_currentLevel].joy * MainEngine.currentPerson.joy;
-			expressionScores.sadness += fp.expression.sadness * _questions[_currentLevel].sadness * MainEngine.currentPerson.sadness;
-			expressionScores.anger += fp.expression.anger * _questions[_currentLevel].anger * MainEngine.currentPerson.anger;
-			expressionScores.excitement += fp.expression.excitement * _questions[_currentLevel].excitement * MainEngine.currentPerson.excitement;
-			expressionScores.surprise += fp.expression.surprise * _questions[_currentLevel].surprise * MainEngine.currentPerson.surprise;
-			expressionScores.disgust += fp.expression.disgust * _questions[_currentLevel].disgust * MainEngine.currentPerson.disgust;
-			
 		}
-		
-		/*
-		// variacao
-		if (_currentLevel > 0) {
-			
+		trace("repetition: " + repetition);
+		// aplicar punicao por repeticao
+		if(repetition >= 4) {
+			attractionAggregate -= Math.pow( repetition-3, 2);
 		}
-		*/
-		
-		
+		trace("attraction final: " + attractionAggregate);
+		stageScore += attractionAggregate;
+		trace("score: " + stageScore);
 		
 		// é final de fase?
         if(_answers.length < _numLevels){
@@ -267,11 +273,16 @@ class MainScene extends Scene{
             date.startTalking();
             _turnCounter.updateCounter();
         }
-        else
+        else {
             stageOver();
+		}
     }
 
-    private function stageOver(){
+    private function stageOver() {
+		if (stageScore < 20) {
+			trace("GaME OVER: " + stageScore);
+			MainEngine.currentStage = 5;
+		}
         MainEngine.nextStage();
     }
 
