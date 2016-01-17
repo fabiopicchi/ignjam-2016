@@ -20,6 +20,9 @@ class MainScene extends Scene{
     private var _actionBar:ActionBar;
     private var _paused:Bool;
     private var _pausedMenu:Entity;
+    private var _btHome:Entity;
+    private var _btResume:Entity;
+    private var _btGiveup:Entity;
 
     private var _answers:Array<Array<String>>;
     private var _sfxMap:StringMap<Sfx> = new StringMap<Sfx>();
@@ -193,8 +196,35 @@ class MainScene extends Scene{
         _pausedMenu = new Entity();
         _pausedMenu.graphic = Image.createRect(Math.floor(HXP.width / HXP.engine.scaleX), 
                 Math.floor(HXP.height / HXP.engine.scaleY), 0x000000, 0.4);
-        _pausedMenu.visible = _paused;
+        var img = new Image("graphics/pause_base.png");
+        img.x = 650;
+        _pausedMenu.addGraphic(img);
         add(_pausedMenu);
+
+        _btResume = new Entity();
+        _btResume.addGraphic(new Image("graphics/pause_bt_continuar.png"));
+        _btResume.x = 699; _btResume.y = 263;
+        _btResume.setHitbox(Math.floor(487 * HXP.engine.scaleX), 
+                Math.floor(145 * HXP.engine.scaleY));
+        add(_btResume);
+
+        _btGiveup = new Entity();
+        _btGiveup.addGraphic(new Image("graphics/pause_bt_desistir.png"));
+        _btGiveup.x = 699; _btGiveup.y = 519;
+        _btGiveup.setHitbox(Math.floor(487 * HXP.engine.scaleX), 
+                Math.floor(145 * HXP.engine.scaleY));
+        add(_btGiveup);
+
+        _btHome = new Entity();
+        _btHome.addGraphic(new Image("graphics/pause_bt_home.png"));
+        _btHome.x = 699; _btHome.y = 775;
+        _btHome.setHitbox(Math.floor(487 * HXP.engine.scaleX), 
+                Math.floor(145 * HXP.engine.scaleY));
+        add(_btHome);
+
+        _btResume.visible = _btGiveup.visible = 
+            _btHome.visible = _pausedMenu.visible = _paused;
+
         _sfxMap.get("song").loop();
         _sfxMap.get("amb").loop();
 
@@ -340,14 +370,35 @@ class MainScene extends Scene{
     }
 
     override public function update(){
-        if(Input.pressed(Key.ESCAPE))
-            _pausedMenu.visible = _paused = !_paused;
+        if(Input.pressed(Key.ESCAPE) || Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX, _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY)){
+            _btResume.visible = _btGiveup.visible = 
+                _btHome.visible = _pausedMenu.visible = _paused = !_paused;
+        }
 
-        if(Input.mousePressed && _btPause.collidePoint(_btPause.x * HXP.engine.scaleX,
-                    _btPause.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
-            _pausedMenu.visible = _paused = !_paused;
+        if(_paused) {
+            if(Input.mousePressed){
+                if(_btHome.collidePoint(_btHome.x * HXP.engine.scaleX,
+                    _btHome.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
+                {
+                    MainEngine.currentStage = 1;
+                    HXP.scene = new MainMenuScene();
+                }
+                if(_btResume.collidePoint(_btResume.x * HXP.engine.scaleX,
+                    _btResume.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
+                {
+                    _btResume.visible = _btGiveup.visible = 
+                        _btHome.visible = _pausedMenu.visible = _paused = !_paused;
+                }
+                if(_btGiveup.collidePoint(_btGiveup.x * HXP.engine.scaleX,
+                    _btGiveup.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
+                {
+                    MainEngine.currentStage = 1;
+                    HXP.scene = new MinglrScene();
+                }
 
-        if(_paused) return;
+            }
+            return;
+        }
 
         super.update();
 
