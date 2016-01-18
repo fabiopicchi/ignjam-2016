@@ -97,7 +97,7 @@ class MinglrScene extends Scene
 		
 		if (MainEngine.firstTime) {
 			tutActive = 1;
-			//MainEngine.firstTime = false;
+			MainEngine.firstTime = false;
 			
 			tut = new Entity();
 			tut.addGraphic(Image.createRect(Math.floor(HXP.width / HXP.engine.scaleX), 

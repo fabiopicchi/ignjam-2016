@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="ignjam2016" package="art.catavento.ignjam2016" version="1.0.0" company="teste" />
+	<meta title="Como sobreviver a um encontro" package="art.catavento.ignjam2016" version="1.0.0" company="Catavento" />
 
 	<!-- output -->
- 	<app file="ignjam2016" main="MainEngine" path="bin" />
+ 	<app file="Como sobreviver a um encontro" main="MainEngine" path="bin" />
 
 	<window fps="60" background="0xFFFFFF" />
 	<window width="1200" height="750" />
@@ -21,5 +21,10 @@
 	<assets path="assets/font" rename="font" include="*.ttf|*.otf" />
 	<assets path="assets/" rename="assets" />
 
-	<icon path="assets/HaxePunk.svg" />
+	<icon path="Icon-ldpi.png" size="36" />
+	<icon path="Icon-mdpi.png" size="48" />
+	<icon path="Icon-hdpi.png" size="72" />
+	<icon path="Icon-xhdpi.png" size="96" />
+	<icon path="Icon-xxhdpi.png" size="144" />
+	<icon path="Icon-xxxhdpi.png" size="192" />
 </project>

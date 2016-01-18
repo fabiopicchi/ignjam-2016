@@ -381,6 +381,8 @@ class MainScene extends Scene{
                 if(_btHome.collidePoint(_btHome.x * HXP.engine.scaleX,
                     _btHome.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
                 {
+					_sfxMap.get("song").stop();
+						_sfxMap.get("amb").stop();
                     MainEngine.currentStage = 1;
                     HXP.scene = new MainMenuScene();
                 }
@@ -389,10 +391,14 @@ class MainScene extends Scene{
                 {
                     _btResume.visible = _btGiveup.visible = 
                         _btHome.visible = _pausedMenu.visible = _paused = !_paused;
+						_sfxMap.get("song").stop();
+						_sfxMap.get("amb").stop();
                 }
                 if(_btGiveup.collidePoint(_btGiveup.x * HXP.engine.scaleX,
                     _btGiveup.y * HXP.engine.scaleY, Input.mouseX, Input.mouseY))
                 {
+					_sfxMap.get("song").stop();
+					_sfxMap.get("amb").stop();
                     MainEngine.currentStage = 1;
                     HXP.scene = new MinglrScene();
                 }
