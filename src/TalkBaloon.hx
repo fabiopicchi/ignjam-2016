@@ -74,7 +74,7 @@ class TalkBaloon extends Entity{
             if(_fullText.length > 0){
                 var image = new Image("graphics/emojis/" + _currentEmoji + ".png");
                 image.x = baloon.width/2 - image.width/2;
-                image.y = _text.y + _text.textHeight + 10;
+                image.y = _text.y + _text.textHeight - 10;
                 addGraphic(image);
             }
         }

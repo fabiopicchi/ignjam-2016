@@ -6,7 +6,7 @@
  	<app file="Como sobreviver a um encontro" main="MainEngine" path="bin" />
 
 	<window fps="60" background="0xFFFFFF" />
-	<window width="1200" height="750" />
+	<window width="1920" height="1200" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
 
 	<source path="src" />

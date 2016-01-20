@@ -6,6 +6,8 @@ import haxe.Json;
 import haxe.ds.StringMap;
 import openfl.Assets;
 import openfl.Lib;
+import openfl.events.Event;
+import openfl.display.StageScaleMode;
 
 class MainEngine extends Engine
 {
@@ -36,6 +38,23 @@ class MainEngine extends Engine
 	
 	public static var firstTime:Bool = true;
 
+	private function e_resize(e:Event){
+
+	var scale = 1.0;
+	var stage = Lib.current.stage;	
+	var wScale = stage.width / 1920;
+	var hScale = stage.height / 1200;
+	scale = Math.min(wScale, hScale);	
+
+	trace(stage.width);
+	trace(stage.height);
+	trace(scale);
+		
+        scaleX = scaleY = scale;
+
+
+	}
+
     override public function init()
     {
 #if debug
@@ -43,8 +62,21 @@ class MainEngine extends Engine
 #end
 
         HXP.scene = new MainMenuScene();
+
+	var scale = 1.0;
+	var stage = Lib.current.stage;	
+	var wScale = stage.width / 1920;
+	var hScale = stage.height / 1200;
+	scale = Math.min(wScale, hScale);	
+
+	stage.scaleMode = StageScaleMode.NO_SCALE;
+	Lib.current.stage.addEventListener(Event.RESIZE, e_resize);
+
+trace(stage.width);
+trace(stage.height);
+	trace(scale);
 		
-        scaleX = scaleY = 0.625;
+        scaleX = scaleY = scale;
 
         var positionData = Json.parse(Assets.getText("assets/partspositions2.json"));
 
